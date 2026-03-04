@@ -1,0 +1,278 @@
+:root {
+    --gap-small: 6px;
+    --gap-medium: 12px;
+    --mt-medium: 12px;
+
+    --color-sub: #5e5e5e;
+
+    --header-height: 70vh;
+}
+
+/*
+-BODY CONTAINER
+*/
+.body-container {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+}
+
+.body-container.side-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/*
+-MARGIN
+ */
+.small-margin {
+    margin: 0 !important;
+    margin-bottom: var(--gap-small) !important;
+}
+
+/*
+-FLEX BOX
+*/
+.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-align-center {
+    align-items: center;
+}
+
+.flex-justify-center {
+    justify-content: center;
+}
+
+.flex-gap-medium {
+    gap: var(--gap-medium);
+}
+
+.flex-gap-small {
+    gap: var(--gap-small);
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+/*
+-BUTTON
+*/
+Button, .button {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-small);
+}
+
+.button-delete-text {
+    color: red !important;
+}
+
+.button-delete-border {
+    border-color: red !important;
+}
+
+.icon-button {
+    min-width: 16px;
+    gap: var(--gap-small);
+}
+
+.menu-toolbar {
+    Button {
+        width: min-content;
+        height: min-content;
+        align-self: center;
+    }
+}
+
+/*
+- BADGE
+*/
+.badge {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-small);
+}
+
+/*
+-TEXT
+*/
+.subtitle {
+    color: var(--color-sub);
+    margin: 0;
+}
+
+p, b {
+    align-items: center;
+    display: flex;
+    gap: var(--gap-small);
+}
+
+/*
+-CARD
+*/
+.card {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-content: center !important;
+    gap: var(--gap-medium) !important;
+}
+
+.card-content{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/*
+-MENU TOOLBAR
+*/
+.menu-toolbar {
+    display: flex;
+    width: 100%;
+    gap: var(--gap-small);
+
+    overflow-x: auto;
+
+    p, b {
+        margin-right: var(--gap-medium);
+    }
+}
+
+/*
+-POPOVER
+*/
+.popover-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+}
+
+/*
+-DIALOG
+*/
+
+.dialog-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+    padding-top: var(--gap-medium);
+    padding-bottom: var(--gap-medium);
+    max-height: 80vh;
+    overflow-y: auto;
+
+    .dialog-content-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap-small);
+
+        Label {
+            max-width: 150px;
+        }
+
+        Input, ComboBox, TextArea {
+            flex: 1;
+        }
+    }
+}
+
+/*
+-NAV DRAWER
+*/
+
+.nav-drawer {
+    padding: var(--gap-small);
+}
+
+.nav-drawer-header {
+    display: flex;
+    align-items: end;
+    margin-top: var(--mt-medium);
+}
+
+.nav-drawer-body {
+    padding-top: var(--mt-medium);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+}
+
+/*
+-BASE STYLES
+*/
+.width-100 {
+    width: 100% !important;
+}
+
+.min-width-unset {
+    min-width: unset !important;
+}
+
+/*
+- INPUT
+*/
+.input-xs {
+    width: 55px !important;
+    height: 25px !important;
+}
+
+.input-xs-wide {
+    width: 65px !important;
+    height: 25px !important;
+}
+
+/***********************************************************
+-----------------------Website Styles-----------------------
+***********************************************************/
+/*
+- Header
+*/
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--header-height);
+    backdrop-filter: brightness(80%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
+    url("./assets/bg-header.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    .header-image-container {
+        width: 200px;
+
+        .header-image {
+            width: 100%;
+        }
+    }
+}
+
+/*
+- News
+*/
+.news-item {
+    width: 100%;
+    max-width: 300px;
+    height: -webkit-fill-available;
+
+    .news-item-img {
+        height: 300px;
+        object-fit: cover;
+    }
+}

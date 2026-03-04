@@ -10,13 +10,11 @@ import MainPage from "./pages/MainPage";
 function App() {
   return (
       <FluentProvider theme={webLightTheme}>
-        <div className={`container`}>
           <Router>
             <Routes>
               <Route path="/" Component={MainPage} />
             </Routes>
           </Router>
-        </div>
       </FluentProvider>
   );
 }
