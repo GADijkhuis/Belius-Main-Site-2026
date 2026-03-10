@@ -1,8 +1,8 @@
 import {fetchNewsItemsFromDatabase} from "./DatabaseHandler";
 
-export const fetchNewsItems = async () => {
+export const fetchNewsItems = async (amount: number | null = null) => {
 
-    const response = await fetchNewsItemsFromDatabase();
+    const response = await fetchNewsItemsFromDatabase(amount);
 
     if (!response) return { data: null, error: `Er konden geen nieuwsitems worden geladen.` };
 

@@ -6,7 +6,7 @@ export const supabase = createClient(
     process.env.REACT_APP_SUPABASE_ANON_KEY || ""
 );
 
-export const fetchNewsItemsFromDatabase = async () => {
+export const fetchNewsItemsFromDatabase = async (amount: number | null = null) => {
     try {
         const result = await supabase.from(`news`)
             .select(`*`)
@@ -20,6 +20,10 @@ export const fetchNewsItemsFromDatabase = async () => {
         const parsedIntoModel: NewsModel[] = result.data.map((data: any) => ({
             ...data
         }));
+
+        if (amount) {
+            return parsedIntoModel.slice(0, amount);
+        }
 
         return parsedIntoModel;
 

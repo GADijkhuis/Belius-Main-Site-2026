@@ -1,16 +1,19 @@
 import {useEffect, useState} from "react";
 import {fetchNewsItems} from "../handlers/NewsHandler";
 import {NewsModel} from "../models/NewsModel";
-import {Caption1, Spinner, Title1} from "@fluentui/react-components";
+import {Button, Caption1, Spinner, Title1} from "@fluentui/react-components";
+import { ArrowCircleRightRegular } from '@fluentui/react-icons';
 import NewsItem from "./news/NewsItem";
+import {navigateToPage} from "../handlers/RouteHandler";
 
-const News = () => {
+const News = ({ showAllNewsItems = false }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [newsItems, setNewsItems] = useState(new Array<NewsModel>());
+    const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
 
     useEffect(() => {
-        fetchNewsItems().then(({ data, error }) => {
+        fetchNewsItems(showAllNewsItems ? null : 7).then(({ data, error }) => {
             setIsLoading(false);
 
             if (error) {
@@ -19,7 +22,14 @@ const News = () => {
             }
 
             if (data) {
-                setNewsItems(data);
+                let newsItemsData = data;
+
+                if (!showAllNewsItems && newsItemsData.length > 6) {
+                    newsItemsData = newsItemsData.slice(0, 6);
+                    setShowMoreButton(true);
+                }
+
+                setNewsItems(newsItemsData);
             }
         });
     }, []);
@@ -33,6 +43,14 @@ const News = () => {
                     newsItems.map((newsItem: NewsModel) => (
                         <NewsItem newsItem={newsItem} />
                     ))
+                }
+            </div>
+            <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
+                {
+                    showMoreButton &&
+                    <Button as={`a`} className={`button`} appearance={`subtle`} onClick={() => navigateToPage(`news`)} >
+                        Ga naar alle nieuwsitems <ArrowCircleRightRegular/>
+                    </Button>
                 }
             </div>
         </>

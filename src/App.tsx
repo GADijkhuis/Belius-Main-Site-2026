@@ -6,6 +6,7 @@ import {
   webLightTheme
 } from "@fluentui/react-components";
 import MainPage from "./pages/MainPage";
+import NewsPage from "./pages/NewsPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" Component={MainPage} />
+              <Route path="/news" Component={NewsPage} />
             </Routes>
           </Router>
       </FluentProvider>
