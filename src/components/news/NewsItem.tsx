@@ -28,7 +28,7 @@ class NewsItem extends React.Component<{newsItem: NewsModel}> {
                     />
                     <CardFooter>
                             { item.link &&
-                                <Button as={`a`} href={item.link} target={`_blank`}>
+                                <Button as={`a`} className={`button`} href={item.link} target={`_blank`}>
                                     Open Link
                                 </Button>
                             }

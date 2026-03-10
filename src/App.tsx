@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import {HashRouter as Router, Routes, Route} from "react-router-dom";
 import {
-  FluentProvider,
-  webLightTheme
+    FluentProvider,
+    webLightTheme
 } from "@fluentui/react-components";
 import MainPage from "./pages/MainPage";
 import NewsPage from "./pages/NewsPage";

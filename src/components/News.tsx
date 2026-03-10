@@ -3,6 +3,7 @@ import {fetchNewsItems} from "../handlers/NewsHandler";
 import {NewsModel} from "../models/NewsModel";
 import {Button, Caption1, Spinner, Title1} from "@fluentui/react-components";
 import { ArrowCircleRightRegular } from '@fluentui/react-icons';
+import {BiArrowBack} from "react-icons/bi";
 import NewsItem from "./news/NewsItem";
 import {navigateToPage} from "../handlers/RouteHandler";
 
@@ -49,7 +50,7 @@ const News = ({ showAllNewsItems = false }) => {
                 {
                     showMoreButton &&
                     <Button as={`a`} className={`button`} appearance={`subtle`} onClick={() => navigateToPage(`news`)} >
-                        Ga naar alle nieuwsitems <ArrowCircleRightRegular/>
+                        Ga naar alle nieuwsitems <ArrowCircleRightRegular />
                     </Button>
                 }
             </div>
