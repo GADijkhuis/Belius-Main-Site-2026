@@ -82,6 +82,10 @@
     flex-wrap: wrap-reverse;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
 /*
 -BUTTON
 */
