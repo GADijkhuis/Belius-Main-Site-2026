@@ -260,7 +260,7 @@ p, b {
     height: var(--header-height);
     backdrop-filter: brightness(80%);
     background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
-    url("./assets/bg-header.jpg");
+    url("./assets/bg-header.webp");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -293,9 +293,6 @@ p, b {
 /*
 - About
 */
-/*.about-text, .about-image {*/
-/*    width: calc(50% - var(--gap-medium));*/
-/*}*/
 .about-text,
 .about-image {
     flex: 1;

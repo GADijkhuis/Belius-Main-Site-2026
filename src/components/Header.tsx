@@ -1,4 +1,4 @@
-import logo from '../assets/belius-logo.avif';
+import logo from '../assets/belius-logo.webp';
 
 const Header = () => {
     return (
