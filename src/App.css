@@ -5,10 +5,15 @@
 
     --color-sub: #5e5e5e;
 
+    --font-size-x-small: 8px;
+    --font-size-small: 12px;
+
     --header-height: 70vh;
 
     --border-radius: 20px;
     --button-border-radius: 14px;
+
+    --login-icon-size: 44px;
 }
 
 /*
@@ -245,6 +250,27 @@ p, b {
     height: 25px !important;
 }
 
+
+/*
+- TEXT
+*/
+.text-x-small {
+    font-size: var(--font-size-x-small);
+}
+.text-small {
+    font-size: var(--font-size-small);
+}
+.text-no-margin {
+    margin: 0;
+}
+.text-center {
+    display: block;
+    text-align: center;
+}
+.text-sub {
+    color: var(--color-sub);
+}
+
 /***********************************************************
 -----------------------Website Styles-----------------------
 ***********************************************************/
@@ -331,4 +357,36 @@ p, b {
         position: relative;
         height: 100%;
     }
+}
+
+
+/*
+-LOGIN
+*/
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+.inner-login-container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--gap-medium);
+    gap: var(--gap-medium);
+
+    margin: var(--gap-small);
+    width: 100%;
+    min-width: 200px;
+    max-width: 480px !important;
+
+    border-radius: var(--border-radius) !important;
+}
+
+.login-icon {
+    width: var(--login-icon-size);
+    height: var(--login-icon-size);
+    object-fit: contain;
 }

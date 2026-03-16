@@ -7,6 +7,7 @@ import {
 } from "@fluentui/react-components";
 import MainPage from "./pages/MainPage";
 import NewsPage from "./pages/NewsPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path="/" Component={MainPage} />
               <Route path="/news" Component={NewsPage} />
+              <Route path="/login" Component={LoginPage} />
             </Routes>
           </Router>
       </FluentProvider>
