@@ -197,6 +197,10 @@ p, b {
 -DIALOG
 */
 
+.dialog {
+    border-radius: var(--border-radius) !important;
+}
+
 .dialog-content-container {
     display: flex;
     flex-direction: column;
