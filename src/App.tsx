@@ -1,5 +1,6 @@
 import React from 'react';
-import './App.css';
+import './styles/App.css';
+import './styles/Site.css';
 import {HashRouter as Router, Routes, Route} from "react-router-dom";
 import {
     FluentProvider,

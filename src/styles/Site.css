@@ -1,0 +1,87 @@
+/***********************************************************
+-----------------------Website Styles-----------------------
+***********************************************************/
+/*
+- Header
+*/
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--header-height);
+    backdrop-filter: brightness(80%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
+    url("../assets/bg-header.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    .header-image-container {
+        width: 200px;
+
+        .header-image {
+            width: 100%;
+        }
+    }
+}
+
+/*
+- News
+*/
+.news-item {
+    width: 100%;
+    max-width: 300px;
+    height: -webkit-fill-available;
+
+    border-radius: var(--border-radius) !important;
+
+    .news-item-img {
+        height: 300px !important;
+        object-fit: cover;
+    }
+}
+
+/*
+- About
+*/
+.about-text,
+.about-image {
+    flex: 1;
+}
+
+.about-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--button-border-radius);
+}
+
+.about-image img {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 768px) {
+
+    .about-text,
+    .about-image {
+        width: 100%;
+        flex: unset;
+    }
+
+    .about-image {
+        position: relative;
+        max-height: 300px;
+    }
+
+    .about-image img {
+        position: relative;
+        height: 100%;
+    }
+}
