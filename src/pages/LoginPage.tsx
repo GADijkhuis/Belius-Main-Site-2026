@@ -45,7 +45,7 @@ const LoginPage = () => {
         setIsLoading(false);
 
         if (!result) {
-            navigateToPage(``);
+            navigateToPage(`/`);
             return;
         }
 

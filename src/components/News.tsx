@@ -5,6 +5,8 @@ import {Button, Caption1, Spinner, Title1} from "@fluentui/react-components";
 import { ArrowCircleRightRegular } from '@fluentui/react-icons';
 import NewsItem from "./news/NewsItem";
 import {navigateToPage} from "../handlers/RouteHandler";
+import {isUserLoggedIn} from "../handlers/UserHandler";
+import NewsDialog from "./news/NewsDialog";
 
 const News = ({ showAllNewsItems = false }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +14,13 @@ const News = ({ showAllNewsItems = false }) => {
     const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
 
+    const loggedIn = isUserLoggedIn();
+
     useEffect(() => {
+        fetchNews();
+    }, []);
+
+    const fetchNews =  () => {
         fetchNewsItems(showAllNewsItems ? null : 7).then(({ data, error }) => {
             setIsLoading(false);
 
@@ -32,7 +40,7 @@ const News = ({ showAllNewsItems = false }) => {
                 setNewsItems(newsItemsData);
             }
         });
-    }, []);
+    }
     return (
         <>
             <Title1>Nieuws</Title1>
@@ -53,6 +61,15 @@ const News = ({ showAllNewsItems = false }) => {
                     </Button>
                 }
             </div>
+            { loggedIn &&
+                <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
+                    <NewsDialog button={
+                        <Button as={`a`} className={`button`} appearance={`subtle`} >
+                            Nieuwsitem toevoegen <ArrowCircleRightRegular />
+                        </Button>
+                    } newsItem={undefined} onClose={() => fetchNews()}/>
+                </div>
+            }
         </>
     );
 }

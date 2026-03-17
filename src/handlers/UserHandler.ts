@@ -28,3 +28,9 @@ export const verifyOTP = async (email: string, token: string)=>  {
 
     return;
 }
+
+export const isUserLoggedIn = () => {
+    const user = supabase.auth.getUser();
+
+    return !!user;
+}
