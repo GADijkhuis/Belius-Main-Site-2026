@@ -5,7 +5,7 @@ const About = () => {
     return (
         <>
             <Title1>Over Belius</Title1>
-            <div className="flex flex-wrap-reverse flex-gap-medium flex-align-stretch">
+            <div id={`about`} className="flex flex-wrap-reverse flex-gap-medium flex-align-stretch">
                 <div className="about-text">
                     <p>
                         Belius zeilen wil het zeilen voor met name jeugd bevorderen. Samen met de zeilers zoeken we naar wat het beste voor de zeiler en het team is. Denk bijvoorbeeld aan trainingsvormen of begeleiding tijdens trainingen.

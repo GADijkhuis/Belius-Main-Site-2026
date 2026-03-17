@@ -3,7 +3,13 @@
     --gap-medium: 12px;
     --mt-medium: 12px;
 
+    --line-container-height: 48px;
+
     --color-sub: #5e5e5e;
+
+    --color-green: #008E3C;
+    --color-blue: #0D4EA8;
+    --color-red: #F00014;
 
     --font-size-x-small: 8px;
     --font-size-small: 12px;
@@ -84,6 +90,12 @@
 
 .flex-1 {
     flex: 1;
+}
+
+@media only screen and (max-width: 768px) {
+    .flex-col-phone {
+        flex-direction: column;
+    }
 }
 
 /*
@@ -276,6 +288,14 @@ p, b {
 }
 
 /*
+-UL
+ */
+.ul-no-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+/*
 -LOGIN
 */
 .login-container {
@@ -304,4 +324,21 @@ p, b {
     width: var(--login-icon-size);
     height: var(--login-icon-size);
     object-fit: contain;
+}
+
+/*
+-LINE
+ */
+.line-container {
+    width: 100%;
+    height: var(--line-container-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.line {
+    width: 100%;
+    height: .5px;
+    background: var(--color-green);
 }

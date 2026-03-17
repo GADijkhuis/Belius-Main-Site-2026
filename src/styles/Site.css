@@ -1,3 +1,7 @@
+:root {
+    --social-link-size: 18px;
+}
+
 /***********************************************************
 -----------------------Website Styles-----------------------
 ***********************************************************/
@@ -5,16 +9,17 @@
 - Header
 */
 .header {
+    position: relative;
+    overflow: hidden;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: var(--header-height);
-    backdrop-filter: brightness(80%);
-    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
-    url("../assets/bg-header.webp");
-    background-repeat: no-repeat;
+
+    background-image: url("../assets/bg-header.webp");
     background-size: cover;
     background-position: center;
 
@@ -25,6 +30,34 @@
             width: 100%;
         }
     }
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 1)
+    ),
+    rgba(0, 0, 0, 0.2);
+
+    pointer-events: none;
+}
+
+/* 👇 keep content above overlay */
+.header > * {
+    position: relative;
+    z-index: 1;
+}
+
+/*
+- Link
+*/
+.link-social {
+    font-size: var(--social-link-size) !important;
 }
 
 /*
