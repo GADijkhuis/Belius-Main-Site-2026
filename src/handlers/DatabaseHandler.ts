@@ -27,6 +27,28 @@ export const fetchNewsItemsFromDatabase = async (amount: number | null = null) =
     return parsedIntoModel;
 }
 
+export const addNewsItemToDatabase = async (newsItem: Partial<NewsModel>) => {
+    const result = await supabase.from(`news`).insert(newsItem).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as NewsModel;
+}
+
+export const updateNewsItemInDatabase = async (id: number, newsItem: Partial<NewsModel>) => {
+    const result = await supabase.from(`news`).update(newsItem).eq('id', id).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as NewsModel;
+}
+
 export const uploadImageToDatabase = async (file: File): Promise<string | null> => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;

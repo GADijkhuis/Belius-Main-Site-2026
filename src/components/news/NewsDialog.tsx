@@ -1,7 +1,7 @@
 import { NewsModel } from "../../models/NewsModel";
-import React, { ReactElement, useId, useState } from "react";
+import React, { useId, useState } from "react";
 import {
-    Button,
+    Button, Caption1,
     Dialog, DialogActions,
     DialogBody,
     DialogContent,
@@ -9,21 +9,22 @@ import {
     DialogTitle,
     DialogTrigger,
     Input,
-    Label
+    Label, Spinner
 } from "@fluentui/react-components";
 import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
+import {addNewsItem, updateNewsItem} from "../../handlers/NewsHandler";
+import {ArrowCircleRightRegular} from "@fluentui/react-icons";
 
 type Props = {
     newsItem?: NewsModel;
-    button: ReactElement;
     onClose: () => void;
 };
 
-const NewsDialog: React.FC<Props> = ({ newsItem: propItem, button, onClose }) => {
+const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
     const isEdit = propItem !== undefined;
 
     const initialItem: NewsModel = propItem || {
-        id: 0,
+        id: -1,
         created_at: new Date(),
         title: "",
         description: "",
@@ -34,6 +35,9 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, button, onClose }) =>
     };
 
     const [newsItem, setNewsItem] = useState<NewsModel>(initialItem);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     const baseId = useId();
 
@@ -61,19 +65,36 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, button, onClose }) =>
         }
     };
 
-    const saveNewsItem = () => {
-        console.log(newsItem);
+    const saveNewsItem = async () => {
+        setIsLoading(true);
+        const result = isEdit ? await updateNewsItem(newsItem) : await addNewsItem(newsItem);
+        setIsLoading(false);
+
+        if (!result) return;
+
+        if (result.error) {
+            setError(result.error);
+            return;
+        }
+
+        setIsOpen(false);
+
         onClose();
     };
 
     return (
-        <Dialog>
+        <Dialog open={isOpen}>
             <DialogTrigger disableButtonEnhancement>
-                {button}
+                <Button as={`a`}
+                        className={`button`}
+                        onClick={ () => setIsOpen(true) } >
+                    { isEdit ? <>Bewerken</> : <>Nieuwsitem toevoegen <ArrowCircleRightRegular/></> }
+                </Button>
             </DialogTrigger>
 
             <DialogSurface className="dialog">
                 <DialogBody>
+                    { error && <Caption1>{ error }</Caption1> }
                     <DialogTitle>
                         Nieuwsitem {isEdit ? "bewerken" : "toevoegen"}
                     </DialogTitle>
@@ -103,7 +124,7 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, button, onClose }) =>
                             </div>
 
                             <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.category}>Category</Label>
+                                <Label htmlFor={fieldIds.category}>Categorie</Label>
                                 <Input
                                     id={fieldIds.category}
                                     value={newsItem.category ?? ""}
@@ -133,20 +154,31 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, button, onClose }) =>
                                         setNewsItem({ ...newsItem, image_url: e.target.value })
                                     }
                                 />
-
-                                <input type="file" accept="image/*" onChange={handleImageUpload} />
+                            </div>
+                            <div className={`file-input-wrapper`} >
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                />
+                                <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                                <p>Upload een afbeelding</p>
                             </div>
                         </form>
                     </DialogContent>
 
                     <DialogActions>
-                        <DialogTrigger>
-                            <Button className="button">Sluiten</Button>
-                        </DialogTrigger>
-
-                        <Button className="button" appearance="primary" onClick={saveNewsItem}>
+                        <Button as={`a`} className="button" onClick={() => setIsOpen(false)}>
+                            Sluiten
+                        </Button>
+                        <Button as={`a`} className="button" appearance="primary" onClick={saveNewsItem} disabled={isLoading}>
                             Opslaan
                         </Button>
+                        {
+                            isLoading && <Spinner size={`extra-tiny`}/>
+                        }
                     </DialogActions>
                 </DialogBody>
             </DialogSurface>

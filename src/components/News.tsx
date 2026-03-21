@@ -49,7 +49,7 @@ const News = ({ showAllNewsItems = false }) => {
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
                 { newsItems && newsItems.length > 0 &&
                     newsItems.map((newsItem: NewsModel) => (
-                        <NewsItem newsItem={newsItem} />
+                        <NewsItem newsItem={newsItem} onClose={() => fetchNews()} />
                     ))
                 }
             </div>
@@ -63,11 +63,7 @@ const News = ({ showAllNewsItems = false }) => {
             </div>
             { loggedIn &&
                 <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
-                    <NewsDialog button={
-                        <Button as={`a`} className={`button`} appearance={`subtle`} >
-                            Nieuwsitem toevoegen <ArrowCircleRightRegular />
-                        </Button>
-                    } newsItem={undefined} onClose={() => fetchNews()}/>
+                    <NewsDialog newsItem={undefined} onClose={() => fetchNews()}/>
                 </div>
             }
         </>
