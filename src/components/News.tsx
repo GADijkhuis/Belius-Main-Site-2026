@@ -13,11 +13,12 @@ const News = ({ showAllNewsItems = false }) => {
     const [newsItems, setNewsItems] = useState(new Array<NewsModel>());
     const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
-
-    const loggedIn = isUserLoggedIn();
+    const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
         fetchNews();
+
+        isUserLoggedIn().then((r) => setLoggedIn(r));
     }, []);
 
     const fetchNews =  () => {
@@ -49,7 +50,7 @@ const News = ({ showAllNewsItems = false }) => {
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
                 { newsItems && newsItems.length > 0 &&
                     newsItems.map((newsItem: NewsModel) => (
-                        <NewsItem newsItem={newsItem} onClose={() => fetchNews()} />
+                        <NewsItem newsItem={newsItem} loggedIn={loggedIn} onClose={() => fetchNews()} />
                     ))
                 }
             </div>

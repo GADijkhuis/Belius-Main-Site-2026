@@ -72,6 +72,10 @@
     justify-content: center;
 }
 
+.flex-justify-end {
+    justify-content: end;
+}
+
 .flex-gap-medium {
     gap: var(--gap-medium);
 }
@@ -91,6 +95,11 @@
 .flex-1 {
     flex: 1;
 }
+
+.flex-space-between {
+    justify-content: space-between;
+}
+
 
 @media only screen and (max-width: 768px) {
     .flex-col-phone {

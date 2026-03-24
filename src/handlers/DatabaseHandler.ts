@@ -49,6 +49,17 @@ export const updateNewsItemInDatabase = async (id: number, newsItem: Partial<New
     return result.data as NewsModel;
 }
 
+export const deleteNewsItemFromDatabase = async (id: number) => {
+    const result = await supabase.from(`news`).delete().eq('id', id);
+
+    if (result.error) {
+        console.error(result.error);
+        return null;
+    }
+
+    return true;
+}
+
 export const uploadImageToDatabase = async (file: File): Promise<string | null> => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
@@ -68,3 +79,4 @@ export const uploadImageToDatabase = async (file: File): Promise<string | null> 
 
     return publicUrlData.publicUrl;
 };
+

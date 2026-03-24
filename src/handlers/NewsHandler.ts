@@ -1,4 +1,9 @@
-import {addNewsItemToDatabase, fetchNewsItemsFromDatabase, updateNewsItemInDatabase} from "./DatabaseHandler";
+import {
+    addNewsItemToDatabase,
+    deleteNewsItemFromDatabase,
+    fetchNewsItemsFromDatabase,
+    updateNewsItemInDatabase
+} from "./DatabaseHandler";
 import {NewsModel} from "../models/NewsModel";
 
 export const fetchNewsItems = async (amount: number | null = null) => {
@@ -46,6 +51,18 @@ export const updateNewsItem = async (newsItem: NewsModel) => {
     const response = await updateNewsItemInDatabase(id, newsItemToUpdate);
 
     if (!response) return { data: null, error: `Er is een fout opgetreden bij het toevoegen van het nieuwsitem.` };
+
+    return { data: response, error: null };
+}
+
+export const deleteNewsItem = async (newsItem: NewsModel) => {
+    const id = newsItem?.id;
+
+    if (!id || id < 0) return { data: null, error: `Er is een fout opgetreden bij het verwijderen van het nieuwsitem.` };
+
+    const response = await deleteNewsItemFromDatabase(id);
+
+    if (!response) return { data: null, error: `Er is een fout opgetreden bij het verwijderen van het nieuwsitem.` };
 
     return { data: response, error: null };
 }

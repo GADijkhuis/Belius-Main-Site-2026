@@ -13,7 +13,7 @@ import {
 } from "@fluentui/react-components";
 import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
 import {addNewsItem, updateNewsItem} from "../../handlers/NewsHandler";
-import {ArrowCircleRightRegular} from "@fluentui/react-icons";
+import {Add16Filled} from "@fluentui/react-icons";
 
 type Props = {
     newsItem?: NewsModel;
@@ -88,7 +88,7 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
                 <Button as={`a`}
                         className={`button`}
                         onClick={ () => setIsOpen(true) } >
-                    { isEdit ? <>Bewerken</> : <>Nieuwsitem toevoegen <ArrowCircleRightRegular/></> }
+                    { isEdit ? <>Bewerken</> : <>Nieuwsitem toevoegen <Add16Filled/></> }
                 </Button>
             </DialogTrigger>
 
