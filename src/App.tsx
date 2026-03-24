@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './styles/App.css';
+import './styles/Site.css';
+import {HashRouter as Router, Routes, Route} from "react-router-dom";
+import {
+    FluentProvider,
+    webLightTheme
+} from "@fluentui/react-components";
+import MainPage from "./pages/MainPage";
+import NewsPage from "./pages/NewsPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <FluentProvider theme={webLightTheme}>
+          <Router>
+            <Routes>
+              <Route path="/" Component={MainPage} />
+              <Route path="/news" Component={NewsPage} />
+              <Route path="/login" Component={LoginPage} />
+            </Routes>
+          </Router>
+      </FluentProvider>
   );
 }
 
