@@ -1,7 +1,7 @@
 {
   "name": "belius",
   "homepage": "https://belius.nl/",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
     "@fluentui/react-components": "^9.72.11",
