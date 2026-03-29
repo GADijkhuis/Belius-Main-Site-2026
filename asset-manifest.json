@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/static/css/main.63416c11.css",
-    "main.js": "/static/js/main.6bfd22e0.js",
+    "main.js": "/static/js/main.6593e18c.js",
     "static/js/453.19841fd7.chunk.js": "/static/js/453.19841fd7.chunk.js",
     "static/media/bg-header.webp": "/static/media/bg-header.87cdba39ebdfaaec932d.webp",
     "static/media/AboutImage.webp": "/static/media/AboutImage.b2aa86d18c998c754ed3.webp",
     "static/media/belius-logo.webp": "/static/media/belius-logo.19670f2667ed9d0b8620.webp",
     "index.html": "/index.html",
     "main.63416c11.css.map": "/static/css/main.63416c11.css.map",
-    "main.6bfd22e0.js.map": "/static/js/main.6bfd22e0.js.map",
+    "main.6593e18c.js.map": "/static/js/main.6593e18c.js.map",
     "453.19841fd7.chunk.js.map": "/static/js/453.19841fd7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.63416c11.css",
-    "static/js/main.6bfd22e0.js"
+    "static/js/main.6593e18c.js"
   ]
 }
