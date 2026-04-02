@@ -1,5 +1,6 @@
 import {createClient} from '@supabase/supabase-js';
 import {NewsModel} from "../models/NewsModel";
+import {BlogModel} from "../models/BlogModel";
 
 export const supabase = createClient(
     process.env.REACT_APP_SUPABASE_URL || "",
@@ -80,3 +81,53 @@ export const uploadImageToDatabase = async (file: File): Promise<string | null> 
     return publicUrlData.publicUrl;
 };
 
+
+export const fetchBlogItemsFromDatabase = async () => {
+    const result = await supabase.from(`blog`)
+        .select(`*`)
+        .order(`date`, { ascending: false });
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    const parsedIntoModel: BlogModel[] = result.data.map((data: any) => ({
+        ...data
+    }));
+
+    return parsedIntoModel;
+}
+
+export const addBlogItemToDatabase = async (blogItem: Partial<BlogModel>) => {
+    const result = await supabase.from(`blog`).insert(blogItem).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogModel;
+}
+
+export const updateBlogItemInDatabase = async (id: number, blogItem: Partial<BlogModel>) => {
+    const result = await supabase.from(`blog`).update(blogItem).eq('id', id).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogModel;
+}
+
+export const deleteBlogItemFromDatabase = async (id: number) => {
+    const result = await supabase.from(`blog`).delete().eq('id', id);
+
+    if (result.error) {
+        console.error(result.error);
+        return null;
+    }
+
+    return true;
+}

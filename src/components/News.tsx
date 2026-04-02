@@ -50,7 +50,7 @@ const News = ({ showAllNewsItems = false }) => {
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
                 { newsItems && newsItems.length > 0 &&
                     newsItems.map((newsItem: NewsModel) => (
-                        <NewsItem newsItem={newsItem} loggedIn={loggedIn} onClose={() => fetchNews()} />
+                        <NewsItem key={newsItem.id} newsItem={newsItem} loggedIn={loggedIn} onClose={() => fetchNews()} />
                     ))
                 }
             </div>
