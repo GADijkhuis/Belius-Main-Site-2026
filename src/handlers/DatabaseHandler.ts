@@ -9,7 +9,7 @@ export const supabase = createClient(
 export const fetchNewsItemsFromDatabase = async (amount: number | null = null) => {
     const result = await supabase.from(`news`)
         .select(`*`)
-        .order(`date`, { ascending: true });
+        .order(`date`, { ascending: false });
 
     if (result.error || !result.data) {
         console.error(result.error);
