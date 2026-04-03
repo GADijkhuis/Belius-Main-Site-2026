@@ -1,7 +1,26 @@
-import {Link, Subtitle1} from "@fluentui/react-components";
+import {Button, Link, Subtitle1} from "@fluentui/react-components";
 import {Envelope, Facebook, Instagram} from "react-bootstrap-icons";
+import {useEffect, useState} from "react";
+import {isUserLoggedIn} from "../handlers/UserHandler";
 
 const Footer = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [copySuccess, setCopySuccess] = useState(false);
+
+    useEffect(() => {
+        isUserLoggedIn().then((r) => setLoggedIn(r));
+    }, []);
+
+    const copyLink = () => {
+        navigator.clipboard.writeText(`${window.location.host}/#/${process.env.REACT_APP_BLOG_URL}`).then(() => {
+            setCopySuccess(true);
+
+            setTimeout(() => {
+                setCopySuccess(false);
+            }, 2000);
+        });
+    }
+
     return (
         <>
             <div className={`flex flex-col-phone`}>
@@ -30,6 +49,14 @@ const Footer = () => {
                         <li>
                             <Link appearance={`subtle`} href={`mailto:zeilen@belius.nl?subject=Wedstrijden Volgen`}>zeilen@belius.nl</Link>
                         </li>
+                        {
+                            loggedIn &&
+                            <li>
+                                <Button as={`a`} className={`button`} appearance={`primary`} onClick={copyLink}>
+                                    { copySuccess ? "Link gekopieerd!" : "Link kopieren"}
+                                </Button>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div className={`flex-1`}>
