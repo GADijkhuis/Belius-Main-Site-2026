@@ -47,7 +47,7 @@ const News = ({ showAllNewsItems = false }) => {
             <Title1>Nieuws</Title1>
             { isLoading && <Spinner /> }
             { error && <Caption1>{ error }</Caption1> }
-            <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
+            <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>
                 { newsItems && newsItems.length > 0 &&
                     newsItems.map((newsItem: NewsModel) => (
                         <NewsItem key={newsItem.id} newsItem={newsItem} loggedIn={loggedIn} onClose={() => fetchNews()} />

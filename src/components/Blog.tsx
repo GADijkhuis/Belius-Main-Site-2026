@@ -34,7 +34,7 @@ const Blog = () => {
 
     return (
         <>
-            <Title1>Blog</Title1>
+            <Title1>Wedstrijden volgen</Title1>
             { isLoading && <Spinner /> }
             {error && <Caption1>{error}</Caption1>}
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
