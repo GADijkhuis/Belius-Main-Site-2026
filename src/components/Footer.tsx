@@ -70,6 +70,10 @@ const Footer = () => {
                         <li>
                             <Link appearance={`subtle`} href={`#news`}>Nieuws</Link>
                         </li>
+                        {
+                            loggedIn &&
+                            <Link appearance={`subtle`} href={`#/${process.env.REACT_APP_BLOG_URL}`}>Blog</Link>
+                        }
                     </ul>
                 </div>
             </div>
