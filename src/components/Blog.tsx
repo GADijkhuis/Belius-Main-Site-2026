@@ -37,7 +37,7 @@ const Blog = () => {
             <Title1>Wedstrijden volgen</Title1>
             { isLoading && <Spinner /> }
             {error && <Caption1>{error}</Caption1>}
-            <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center`}>
+            <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>
                 { blogItems && blogItems.length > 0 &&
                     blogItems.map((blogItem: BlogModel) => (
                         <BlogItem blogItem={blogItem} loggedIn={loggedIn} onClose={() => fetchBlog()}/>
