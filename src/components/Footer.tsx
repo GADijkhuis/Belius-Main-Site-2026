@@ -44,7 +44,7 @@ const Footer = () => {
                 <div className={`flex-1`}>
                     <ul className={`ul-no-list`}>
                         <li>
-                            <Subtitle1 className={`text-no-margin`}>Wedstrijden volgen</Subtitle1>
+                            <Subtitle1 className={`text-no-margin`}>Zeilteams volgen</Subtitle1>
                         </li>
                         <li>
                             <Link appearance={`subtle`} href={`mailto:zeilen@belius.nl?subject=Wedstrijden Volgen`}>zeilen@belius.nl</Link>
