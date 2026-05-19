@@ -22,9 +22,13 @@ class NewsItem extends React.Component<{newsItem: NewsModel, loggedIn: boolean, 
         return (
             <>
                 <Card className={`news-item`}>
-                    <CardPreview>
-                        <img className={`news-item-img`} src={item.image_url} alt={item.title} />
-                    </CardPreview>
+                    {
+                        item.image_url ?
+                            <CardPreview>
+                                <img className={`news-item-img`} src={item.image_url} alt={item.title} />
+                            </CardPreview>
+                            : null
+                    }
                     <CardHeader
                         header={
                             <>

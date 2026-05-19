@@ -45,8 +45,10 @@ const Blog = () => {
                 }
             </div>
             { loggedIn &&
-                <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
-                    <BlogDialog blogItem={undefined} onClose={() => fetchBlog()}/>
+                <div className={`pos-sticky pos-bottom flex flex-justify-center width-100 mt-medium`}>
+                    <div className={`flex flex-gap-medium flex-wrap actions-container`}>
+                        <BlogDialog key={`${new Date()}`} blogItem={undefined} onClose={() => fetchBlog()}/>
+                    </div>
                 </div>
             }
         </>

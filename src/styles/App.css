@@ -10,6 +10,7 @@
     --color-green: #008E3C;
     --color-blue: #0D4EA8;
     --color-red: #F00014;
+    --color-bg: #FFF;
 
     --font-size-x-small: 8px;
     --font-size-small: 12px;
@@ -40,12 +41,42 @@
 }
 
 /*
+-ACTIONS
+ */
+.actions-container {
+    border-radius: var(--border-radius);
+    padding: var(--gap-small);
+    background-color: var(--color-bg);
+    width: fit-content;
+}
+
+/*
+-MARGIN
+ */
+/*
 -MARGIN
  */
 .small-margin {
     margin: 0 !important;
     margin-bottom: var(--gap-small) !important;
 }
+
+.mt-medium {
+    margin-top: var(--gap-medium);
+}
+
+.mb-medium {
+    margin-bottom: var(--gap-medium);
+}
+
+.mt-small {
+    margin-top: var(--gap-small);
+}
+
+.mb-small {
+    margin-bottom: var(--gap-small);
+}
+
 
 /*
 -FLEX BOX
@@ -106,6 +137,29 @@
         flex-direction: column;
     }
 }
+
+/*
+- POSITION
+ */
+.pos-fixed {
+    position: fixed;
+}
+
+.pos-sticky {
+    position: sticky;
+}
+
+.pos-bottom {
+    bottom: var(--gap-medium);
+    left: var(--gap-medium);
+    right: var(--gap-medium);
+}
+
+.pos-sticky-actions {
+    border-radius: var(--border-radius);
+    background-color: var(--color-bg);
+}
+
 
 /*
 -BUTTON
