@@ -63,8 +63,10 @@ const News = ({ showAllNewsItems = false }) => {
                 }
             </div>
             { loggedIn &&
-                <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
-                    <NewsDialog newsItem={undefined} onClose={() => fetchNews()}/>
+                <div className={`pos-sticky pos-bottom flex flex-justify-center width-100 mt-medium`}>
+                    <div className={`flex flex-gap-medium flex-wrap actions-container`}>
+                        <NewsDialog key={`${new Date()}`} newsItem={undefined} onClose={() => fetchNews()}/>
+                    </div>
                 </div>
             }
         </>
