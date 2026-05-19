@@ -7,6 +7,8 @@ const Footer = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
 
+    const packageJson = require('../../package.json');
+
     useEffect(() => {
         isUserLoggedIn().then((r) => setLoggedIn(r));
     }, []);
@@ -77,6 +79,7 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
+            <p className={`text-no-margin text-center width-100 text-sub`}>&#169; {(new Date()).getFullYear()} Belius - v{packageJson.version}</p>
         </>
     );
 }
