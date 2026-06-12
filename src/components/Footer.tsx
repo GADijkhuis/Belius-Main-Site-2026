@@ -80,6 +80,7 @@ const Footer = () => {
                 </div>
             </div>
             <p className={`text-no-margin text-center width-100 text-sub`}>&#169; {(new Date()).getFullYear()} Belius - v{packageJson.version}</p>
+            <p className={`text-no-margin text-center width-100 text-sub`}><a href={`#login`} className={`text-sub no-underline`}>Login</a></p>
         </>
     );
 }
