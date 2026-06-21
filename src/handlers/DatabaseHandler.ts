@@ -1,6 +1,8 @@
 import {createClient} from '@supabase/supabase-js';
 import {NewsModel} from "../models/NewsModel";
 import {BlogModel} from "../models/BlogModel";
+import BlogCategory from "../components/BlogCategory";
+import {BlogCategoryModel} from "../models/BlogCategoryModel";
 
 export const supabase = createClient(
     process.env.REACT_APP_SUPABASE_URL || "",
@@ -82,9 +84,60 @@ export const uploadImageToDatabase = async (file: File): Promise<string | null> 
 };
 
 
-export const fetchBlogItemsFromDatabase = async () => {
+export const fetchBlogCategoriesFromDatabase = async () => {
+    const result = await supabase.from(`blog-categories`)
+        .select(`*`)
+        .order(`id`, { ascending: false });
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    const parsedIntoModel: BlogCategoryModel[] = result.data.map((data: any) => ({
+        ...data
+    }));
+
+    return parsedIntoModel;
+}
+
+export const addBlogCategoryToDatabase = async (blogItem: Partial<BlogCategoryModel>) => {
+    const result = await supabase.from(`blog-categories`).insert(blogItem).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogCategoryModel;
+}
+
+export const updateBlogCategoryInDatabase = async (id: number, blogItem: Partial<BlogCategoryModel>) => {
+    const result = await supabase.from(`blog-categories`).update(blogItem).eq('id', id).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogModel;
+}
+
+export const deleteBlogCategoryFromDatabase = async (id: number) => {
+    const result = await supabase.from(`blog-categories`).delete().eq('id', id);
+
+    if (result.error) {
+        console.error(result.error);
+        return null;
+    }
+
+    return true;
+}
+
+export const fetchBlogItemsFromDatabase = async (categoryId: number) => {
     const result = await supabase.from(`blog`)
         .select(`*`)
+        .eq(`category_id`, categoryId)
         .order(`date`, { ascending: false });
 
     if (result.error || !result.data) {

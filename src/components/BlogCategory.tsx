@@ -1,20 +1,28 @@
 import {useEffect, useState} from "react";
 import {isUserLoggedIn} from "../handlers/UserHandler";
-import {fetchBlogItems} from "../handlers/BlogHandler";
+import {fetchBlogCategoryItems, fetchBlogItems} from "../handlers/BlogHandler";
 import {Spinner, Title1, Caption1} from "@fluentui/react-components";
 import {BlogModel} from "../models/BlogModel";
 import BlogItem from "./blog/BlogItem";
 import BlogDialog from "./blog/BlogDialog";
-import BackButton from "./assets/BackButton";
+import {BlogCategoryModel} from "../models/BlogCategoryModel";
+import BlogCategoryItem from "./blog-category/BlogCategoryItem";
+import BlogCategoryDialog from "./blog-category/BlogCategoryDialog";
 
-const Blog = ({categoryId}: { categoryId: number }) => {
+const BlogCategory = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const [blogItems, setBlogItems] = useState(new Array<BlogModel>());
+    const [blogCategoryItems, setBlogCategoryItems] = useState(new Array<BlogCategoryModel>());
     const [error, setError] = useState(``);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    const fetchBlog = () => {
-        fetchBlogItems(categoryId).then(({ data, error }) => {
+    useEffect(() => {
+        fetchBlogCategories();
+
+        isUserLoggedIn().then((r) => setLoggedIn(r));
+    }, []);
+
+    const fetchBlogCategories = () => {
+        fetchBlogCategoryItems().then(({ data, error }) => {
             setIsLoading(false);
 
             if (error) {
@@ -22,38 +30,32 @@ const Blog = ({categoryId}: { categoryId: number }) => {
             }
 
             if (data) {
-                setBlogItems(data);
+                setBlogCategoryItems(data);
             }
         });
-    };
-
-    useEffect(() => {
-        fetchBlog();
-        isUserLoggedIn().then((r) => setLoggedIn(r));
-    }, [categoryId]);
+    }
 
     return (
         <>
-            <BackButton/>
             <Title1>Wedstrijden volgen</Title1>
             { isLoading && <Spinner /> }
             {error && <Caption1>{error}</Caption1>}
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>
-                { blogItems && blogItems.length > 0 &&
-                    blogItems.map((blogItem: BlogModel) => (
-                        <BlogItem key={blogItem.id} blogItem={blogItem} loggedIn={loggedIn} onClose={() => fetchBlog()} categoryId={categoryId}/>
+                { blogCategoryItems && blogCategoryItems.length > 0 &&
+                    blogCategoryItems.map((blogCategory: BlogCategoryModel) => (
+                        <BlogCategoryItem blogCategoryItem={blogCategory} loggedIn={loggedIn} onClose={() => fetchBlogCategories()}/>
                     ))
                 }
             </div>
             { loggedIn &&
                 <div className={`pos-sticky pos-bottom flex flex-justify-center width-100 mt-medium`}>
                     <div className={`flex flex-gap-medium flex-wrap actions-container`}>
-                        <BlogDialog key={`${new Date()}`} blogItem={undefined} onClose={() => fetchBlog()} categoryId={categoryId} />
+                        <BlogCategoryDialog key={`${new Date()}`} blogCategoryItem={undefined} onClose={() => fetchBlogCategories()}/>
                     </div>
                 </div>
             }
         </>
-    );
-};
+    )
+}
 
-export default Blog;
+export default BlogCategory;

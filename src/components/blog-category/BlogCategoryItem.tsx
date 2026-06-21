@@ -1,20 +1,22 @@
 import {Text, Caption1, Caption2, Card, CardHeader, CardPreview, Button, CardFooter} from "@fluentui/react-components";
 import {Delete16Filled} from "@fluentui/react-icons"
 import React from "react";
-import NewsDialog from "./BlogDialog";
+import NewsDialog from "./BlogCategoryDialog";
 import ConfirmDialog from "../assets/ConfirmDialog";
 import {BlogModel} from "../../models/BlogModel";
-import {deleteBlogItem} from "../../handlers/BlogHandler";
+import {deleteBlogCategoryItem, deleteBlogItem} from "../../handlers/BlogHandler";
+import {BlogCategoryModel} from "../../models/BlogCategoryModel";
+import BlogCategoryDialog from "./BlogCategoryDialog";
+import {navigateToPage} from "../../handlers/RouteHandler";
 
-class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, onClose: () => void, categoryId: number}> {
+class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryModel, loggedIn: boolean, onClose: () => void}> {
     render() {
-        const item = this.props.blogItem;
+        const item = this.props.blogCategoryItem;
         const loggedIn = this.props.loggedIn;
         const onClose = this.props.onClose;
-        const categoryId = this.props.categoryId;
 
         const deleteItem = () => {
-            deleteBlogItem(item).then(() => {
+            deleteBlogCategoryItem(item).then(() => {
                 this.props.onClose();
             });
         }
@@ -25,7 +27,7 @@ class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, 
                     {
                         item.image_url ?
                             <CardPreview>
-                                <img className={`news-item-img`} src={item.image_url} alt={item.title} />
+                                <img className={`news-item-img`} src={item.image_url} alt={item.name} />
                             </CardPreview>
                             : null
                     }
@@ -33,28 +35,22 @@ class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, 
                         header={
                             <>
                                 <Text weight="semibold">
-                                    {item.title}
+                                    {item.name}
                                 </Text>
                             </>
-                        }
-                        description={
-                            <div className={`flex flex-column flex-gap-small`}>
-                                { item.category && <Caption2>{item.category}</Caption2> }
-                                { item.description && <Caption1>{item.description}</Caption1> }
-                            </div>
                         }
                     />
                     <CardFooter>
                         <div className={`flex flex-gap-small flex-wrap`}>
-                            { item.link &&
-                                <Button as={`a`} className={`button`} href={item.link} target={`_blank`}>
-                                    Open Link
+                            { item.id &&
+                                <Button as={`a`} className={`button`} target={`_blank`} onClick={() => navigateToPage(`blog/${item.id}`)}>
+                                    Open Categorie
                                 </Button>
                             }
                             { loggedIn &&
                                 <>
-                                    <NewsDialog onClose={onClose} blogItem={item} categoryId={categoryId} />
-                                    <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog item Verwijderen?`} description={`Weet u zeker dat dit blog item moet worden verwijderd?`} onConfirm={deleteItem}/>
+                                    <BlogCategoryDialog onClose={onClose} blogCategoryItem={item} />
+                                    <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog categorie Verwijderen?`} description={`Weet u zeker dat dit blog category moet worden verwijderd?`} onConfirm={deleteItem}/>
                                 </>
                             }
                         </div>
@@ -66,4 +62,4 @@ class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, 
 
 }
 
-export default BlogItem;
+export default BlogCategoryItem;

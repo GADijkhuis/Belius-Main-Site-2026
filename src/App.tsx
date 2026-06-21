@@ -10,6 +10,8 @@ import MainPage from "./pages/MainPage";
 import NewsPage from "./pages/NewsPage";
 import LoginPage from "./pages/LoginPage";
 import BlogPage from "./pages/BlogPage";
+import BlogCategory from "./components/BlogCategory";
+import BlogCategoryPage from "./pages/BlogCategoryPage";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
                 <Route path="/" Component={MainPage} />
                 <Route path="/news" Component={NewsPage} />
                 <Route path="/login" Component={LoginPage} />
+                <Route path="/blog" Component={BlogCategoryPage} />
+                <Route path="/blog/:categoryId" Component={BlogPage} />
                 <Route path={`/${process.env.REACT_APP_BLOG_URL}`} Component={BlogPage} />
             </Routes>
           </Router>

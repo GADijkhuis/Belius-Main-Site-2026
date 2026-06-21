@@ -13,30 +13,24 @@ import {
 import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
 import {Add16Filled} from "@fluentui/react-icons";
 import {BlogModel} from "../../models/BlogModel";
-import {addBlogItem, updateBlogItem} from "../../handlers/BlogHandler";
+import {addBlogCategoryItem, addBlogItem, updateBlogCategoryItem, updateBlogItem} from "../../handlers/BlogHandler";
+import {BlogCategoryModel} from "../../models/BlogCategoryModel";
 
 type Props = {
-    blogItem?: BlogModel;
+    blogCategoryItem?: BlogCategoryModel;
     onClose: () => void;
-    categoryId: number;
 };
 
-const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }) => {
+const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClose }) => {
     const isEdit = propItem !== undefined;
 
-    const initialItem: BlogModel = propItem || {
+    const initialItem: BlogCategoryModel = propItem || {
         id: -1,
-        created_at: new Date(),
-        title: "",
-        description: "",
-        category: "",
+        name: "",
         image_url: "",
-        link: "",
-        date: new Date(),
-        category_id: categoryId
     };
 
-    const [blogItem, setBlogItem] = useState<BlogModel>(initialItem);
+    const [blogCategoryItem, setBlogCategoryItem] = useState<BlogCategoryModel>(initialItem);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -44,11 +38,8 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
     const baseId = useId();
 
     const fieldIds = {
-        title: `${baseId}-title`,
-        description: `${baseId}-description`,
-        category: `${baseId}-category`,
+        name: `${baseId}-name`,
         image_url: `${baseId}-image_url`,
-        link: `${baseId}-link`,
     } as const;
 
     const handleImageUpload = async (
@@ -60,16 +51,16 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
         const url = await uploadImageToDatabase(file);
 
         if (url) {
-            setBlogItem(prev => ({
+            setBlogCategoryItem(prev => ({
                 ...prev,
                 image_url: url
             }));
         }
     };
 
-    const saveBlogItem = async () => {
+    const saveBlogCategoryItem = async () => {
         setIsLoading(true);
-        const result = isEdit ? await updateBlogItem(blogItem, categoryId) : await addBlogItem(blogItem, categoryId);
+        const result = isEdit ? await updateBlogCategoryItem(blogCategoryItem) : await addBlogCategoryItem(blogCategoryItem);
         setIsLoading(false);
 
         if (!result) return;
@@ -104,45 +95,12 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
                     <DialogContent>
                         <form className="flex flex-column flex-gap-medium">
                             <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.title}>Titel</Label>
+                                <Label htmlFor={fieldIds.name}>Titel</Label>
                                 <Input
-                                    id={fieldIds.title}
-                                    value={blogItem.title}
+                                    id={fieldIds.name}
+                                    value={blogCategoryItem.name}
                                     onChange={(e) =>
-                                        setBlogItem({ ...blogItem, title: e.target.value })
-                                    }
-                                />
-                            </div>
-
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.description}>Beschrijving</Label>
-                                <Input
-                                    id={fieldIds.description}
-                                    value={blogItem.description ?? ""}
-                                    onChange={(e) =>
-                                        setBlogItem({ ...blogItem, description: e.target.value })
-                                    }
-                                />
-                            </div>
-
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.category}>Categorie</Label>
-                                <Input
-                                    id={fieldIds.category}
-                                    value={blogItem.category ?? ""}
-                                    onChange={(e) =>
-                                        setBlogItem({ ...blogItem, category: e.target.value })
-                                    }
-                                />
-                            </div>
-
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.link}>Link</Label>
-                                <Input
-                                    id={fieldIds.link}
-                                    value={blogItem.link ?? ""}
-                                    onChange={(e) =>
-                                        setBlogItem({ ...blogItem, link: e.target.value })
+                                        setBlogCategoryItem({ ...blogCategoryItem, name: e.target.value })
                                     }
                                 />
                             </div>
@@ -151,9 +109,9 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
                                 <Label htmlFor={fieldIds.image_url}>Afbeelding</Label>
                                 <Input
                                     id={fieldIds.image_url}
-                                    value={blogItem.image_url ?? ""}
+                                    value={blogCategoryItem.image_url ?? ""}
                                     onChange={(e) =>
-                                        setBlogItem({ ...blogItem, image_url: e.target.value })
+                                        setBlogCategoryItem({ ...blogCategoryItem, image_url: e.target.value })
                                     }
                                 />
                             </div>
@@ -175,7 +133,7 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
                         <Button as={`a`} className="button" onClick={() => setIsOpen(false)}>
                             Sluiten
                         </Button>
-                        <Button as={`a`} className="button" appearance="primary" onClick={saveBlogItem} disabled={isLoading}>
+                        <Button as={`a`} className="button" appearance="primary" onClick={saveBlogCategoryItem} disabled={isLoading}>
                             Opslaan
                         </Button>
                         {
@@ -188,4 +146,4 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
     );
 };
 
-export default BlogDialog;
+export default BlogCategoryDialog;
