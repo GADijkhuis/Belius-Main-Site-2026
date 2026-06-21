@@ -90,7 +90,7 @@ const LoginPage = () => {
                                   Token valideren
                               </Button>
                           </div>
-                          <p className={`text-small text-no-margin text-center text-sub`}>Let op, de email wordt verzonden via noreply@mail.app.supabase.io</p>
+                          <p className={`text-small text-no-margin text-center text-sub`}>Let op, de email wordt verzonden via no-reply@gadijkhuis.nl</p>
                       </form>
                   }
 

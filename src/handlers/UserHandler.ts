@@ -4,6 +4,8 @@ import {fetchAccountByEmailFromDatabase, linkAccountOnLogin} from "./AccountHand
 export const signInUserPasswordless = async (email: string) => {
     const account = await fetchAccountByEmailFromDatabase(email);
 
+    console.log(account);
+
     if (!account || !account.active) {
         return "Je account is niet actief of bestaat niet.";
     }

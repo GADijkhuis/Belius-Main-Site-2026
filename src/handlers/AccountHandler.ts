@@ -35,25 +35,23 @@ export const fetchAccountsFromDatabase = async () => {
         .select(`*`)
         .order(`created_at`, { ascending: false });
 
+
     if (result.error || !result.data) {
         console.error(result.error);
         return null;
     }
 
-    const parsedIntoModel: AccountModel[] = result.data.map(parseAccountModel);
-
-    return parsedIntoModel;
+    return result.data.map(parseAccountModel);
 }
 
 export const fetchAccountByEmailFromDatabase = async (email: string) => {
-    const normalizedEmail = normalizeEmail(email);
-
-    if (!normalizedEmail) return null;
 
     const result = await supabase.from(ACCOUNT_TABLE)
         .select(`*`)
-        .eq(`email`, normalizedEmail)
-        .maybeSingle();
+        .eq(`email`, email)
+        .single();
+    console.log(result);
+
 
     if (result.error) {
         console.error(result.error);
@@ -68,30 +66,7 @@ export const fetchAccountByEmailFromDatabase = async (email: string) => {
 }
 
 export const linkAccountOnLogin = async (email: string) => {
-    // Schema no longer stores auth linkage metadata, so only validate the account exists.
     await fetchAccountByEmailFromDatabase(email);
-}
-
-
-export const fetchAccountBySupabaseUserIdFromDatabase = async () => {
-    const userResult = await supabase.auth.getUser();
-
-    if (userResult.error || !userResult.data.user?.email) {
-        if (userResult.error) console.error(userResult.error);
-        return null;
-    }
-
-    return fetchAccountByEmailFromDatabase(userResult.data.user.email);
-}
-
-export const fetchAccountBySupabaseEmailFromDatabase = async (email: string) => {
-    const result = await fetchAccountByEmailFromDatabase(email);
-
-    if (!result) {
-        return null;
-    }
-
-    return result;
 }
 
 const addAccountToDatabase = async (account: Partial<AccountModel>) => {
