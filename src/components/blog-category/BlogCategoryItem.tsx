@@ -1,18 +1,16 @@
-import {Text, Caption1, Caption2, Card, CardHeader, CardPreview, Button, CardFooter} from "@fluentui/react-components";
+import {Text, Card, CardHeader, CardPreview, Button, CardFooter} from "@fluentui/react-components";
 import {Delete16Filled} from "@fluentui/react-icons"
 import React from "react";
-import NewsDialog from "./BlogCategoryDialog";
 import ConfirmDialog from "../assets/ConfirmDialog";
-import {BlogModel} from "../../models/BlogModel";
-import {deleteBlogCategoryItem, deleteBlogItem} from "../../handlers/BlogHandler";
+import {deleteBlogCategoryItem} from "../../handlers/BlogHandler";
 import {BlogCategoryModel} from "../../models/BlogCategoryModel";
 import BlogCategoryDialog from "./BlogCategoryDialog";
 import {navigateToPage} from "../../handlers/RouteHandler";
 
-class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryModel, loggedIn: boolean, onClose: () => void}> {
+class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryModel, isAdmin: boolean, onClose: () => void}> {
     render() {
         const item = this.props.blogCategoryItem;
-        const loggedIn = this.props.loggedIn;
+        const isAdmin = this.props.isAdmin;
         const onClose = this.props.onClose;
 
         const deleteItem = () => {
@@ -47,7 +45,7 @@ class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryMo
                                     Open Categorie
                                 </Button>
                             }
-                            { loggedIn &&
+                            { isAdmin &&
                                 <>
                                     <BlogCategoryDialog onClose={onClose} blogCategoryItem={item} />
                                     <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog categorie Verwijderen?`} description={`Weet u zeker dat dit blog category moet worden verwijderd?`} onConfirm={deleteItem}/>

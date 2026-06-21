@@ -19,9 +19,10 @@ type Props = {
     blogItem?: BlogModel;
     onClose: () => void;
     categoryId: number;
+    isAdmin?: boolean;
 };
 
-const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }) => {
+const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, isAdmin = false }) => {
     const isEdit = propItem !== undefined;
 
     const initialItem: BlogModel = propItem || {
@@ -89,7 +90,8 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId }
             <DialogTrigger disableButtonEnhancement>
                 <Button as={`a`}
                         className={`button`}
-                        onClick={ () => setIsOpen(true) } >
+                        onClick={ () => isAdmin && setIsOpen(true) }
+                        disabled={!isAdmin}>
                     { isEdit ? <>Bewerken</> : <>Blog item toevoegen <Add16Filled/></> }
                 </Button>
             </DialogTrigger>

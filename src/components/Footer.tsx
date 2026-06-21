@@ -1,16 +1,19 @@
 import {Button, Link, Subtitle1} from "@fluentui/react-components";
 import {Envelope, Facebook, Instagram} from "react-bootstrap-icons";
 import {useEffect, useState} from "react";
-import {isUserLoggedIn} from "../handlers/UserHandler";
+import {isUserAdmin, isUserLoggedIn, signOutUser} from "../handlers/UserHandler";
+import {navigateToPage} from "../handlers/RouteHandler";
 
 const Footer = () => {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
 
     const packageJson = require('../../package.json');
 
     useEffect(() => {
         isUserLoggedIn().then((r) => setLoggedIn(r));
+        isUserAdmin().then((r) => setIsAdmin(r));
     }, []);
 
     const copyLink = () => {
@@ -74,13 +77,29 @@ const Footer = () => {
                         </li>
                         {
                             loggedIn &&
-                            <Link appearance={`subtle`} href={`#/${process.env.REACT_APP_BLOG_URL}`}>Blog</Link>
+                            <li>
+                                <Link appearance={`subtle`} href={`#blog`}>Blog</Link>
+                            </li>
+                        }
+                        {
+                            isAdmin &&
+                            <li>
+                                <Link appearance={`subtle`} href={`#/admin`}>Admin</Link>
+                            </li>
+                        }
+                        { loggedIn ?
+                            <Link appearance={`subtle`} onClick={() => signOutUser()}>
+                                Uitloggen
+                            </Link>
+                            :
+                            <Link appearance={`subtle`} onClick={() => navigateToPage(`login`)}>
+                                Inloggen
+                            </Link>
                         }
                     </ul>
                 </div>
             </div>
             <p className={`text-no-margin text-center width-100 text-sub`}>&#169; {(new Date()).getFullYear()} Belius - v{packageJson.version}</p>
-            <p className={`text-no-margin text-center width-100 text-sub`}><a href={`#login`} className={`text-sub no-underline`}>Login</a></p>
         </>
     );
 }

@@ -6,10 +6,10 @@ import ConfirmDialog from "../assets/ConfirmDialog";
 import {BlogModel} from "../../models/BlogModel";
 import {deleteBlogItem} from "../../handlers/BlogHandler";
 
-class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, onClose: () => void, categoryId: number}> {
+class BlogItem extends React.Component<{blogItem: BlogModel, isAdmin: boolean, onClose: () => void, categoryId: number}> {
     render() {
         const item = this.props.blogItem;
-        const loggedIn = this.props.loggedIn;
+        const isAdmin = this.props.isAdmin;
         const onClose = this.props.onClose;
         const categoryId = this.props.categoryId;
 
@@ -51,7 +51,7 @@ class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, 
                                     Open Link
                                 </Button>
                             }
-                            { loggedIn &&
+                            { isAdmin &&
                                 <>
                                     <NewsDialog onClose={onClose} blogItem={item} categoryId={categoryId} />
                                     <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog item Verwijderen?`} description={`Weet u zeker dat dit blog item moet worden verwijderd?`} onConfirm={deleteItem}/>

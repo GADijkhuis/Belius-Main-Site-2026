@@ -12,16 +12,16 @@ import {
 } from "@fluentui/react-components";
 import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
 import {Add16Filled} from "@fluentui/react-icons";
-import {BlogModel} from "../../models/BlogModel";
-import {addBlogCategoryItem, addBlogItem, updateBlogCategoryItem, updateBlogItem} from "../../handlers/BlogHandler";
+import {addBlogCategoryItem, updateBlogCategoryItem} from "../../handlers/BlogHandler";
 import {BlogCategoryModel} from "../../models/BlogCategoryModel";
 
 type Props = {
     blogCategoryItem?: BlogCategoryModel;
     onClose: () => void;
+    isAdmin?: boolean;
 };
 
-const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClose }) => {
+const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClose, isAdmin = false }) => {
     const isEdit = propItem !== undefined;
 
     const initialItem: BlogCategoryModel = propItem || {
@@ -80,7 +80,7 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
             <DialogTrigger disableButtonEnhancement>
                 <Button as={`a`}
                         className={`button`}
-                        onClick={ () => setIsOpen(true) } >
+                        onClick={ () => isAdmin && setIsOpen(true) } >
                     { isEdit ? <>Bewerken</> : <>Blog item toevoegen <Add16Filled/></> }
                 </Button>
             </DialogTrigger>

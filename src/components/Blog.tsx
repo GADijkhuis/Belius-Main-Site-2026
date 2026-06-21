@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {isUserLoggedIn} from "../handlers/UserHandler";
+import {isUserAdmin, isUserLoggedIn} from "../handlers/UserHandler";
 import {fetchBlogItems} from "../handlers/BlogHandler";
 import {Spinner, Title1, Caption1} from "@fluentui/react-components";
 import {BlogModel} from "../models/BlogModel";
@@ -12,6 +12,7 @@ const Blog = ({categoryId}: { categoryId: number }) => {
     const [blogItems, setBlogItems] = useState(new Array<BlogModel>());
     const [error, setError] = useState(``);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchBlog = () => {
         fetchBlogItems(categoryId).then(({ data, error }) => {
@@ -29,7 +30,8 @@ const Blog = ({categoryId}: { categoryId: number }) => {
 
     useEffect(() => {
         fetchBlog();
-        isUserLoggedIn().then((r) => setLoggedIn(r));
+            isUserLoggedIn().then((r) => setLoggedIn(r));
+            isUserAdmin().then((r) => setIsAdmin(r));
     }, [categoryId]);
 
     return (
@@ -41,14 +43,14 @@ const Blog = ({categoryId}: { categoryId: number }) => {
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>
                 { blogItems && blogItems.length > 0 &&
                     blogItems.map((blogItem: BlogModel) => (
-                        <BlogItem key={blogItem.id} blogItem={blogItem} loggedIn={loggedIn} onClose={() => fetchBlog()} categoryId={categoryId}/>
+                        <BlogItem key={blogItem.id} blogItem={blogItem} isAdmin={isAdmin} onClose={() => fetchBlog()} categoryId={categoryId}/>
                     ))
                 }
             </div>
-            { loggedIn &&
+            { isAdmin &&
                 <div className={`pos-sticky pos-bottom flex flex-justify-center width-100 mt-medium`}>
                     <div className={`flex flex-gap-medium flex-wrap actions-container`}>
-                        <BlogDialog key={`${new Date()}`} blogItem={undefined} onClose={() => fetchBlog()} categoryId={categoryId} />
+                        <BlogDialog key={`${new Date()}`} blogItem={undefined} onClose={() => fetchBlog()} categoryId={categoryId} isAdmin={isAdmin} />
                     </div>
                 </div>
             }
