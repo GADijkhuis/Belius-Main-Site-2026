@@ -11,7 +11,6 @@ const Blog = ({categoryId}: { categoryId: number }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [blogItems, setBlogItems] = useState(new Array<BlogModel>());
     const [error, setError] = useState(``);
-    const [loggedIn, setLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchBlog = () => {
@@ -30,7 +29,6 @@ const Blog = ({categoryId}: { categoryId: number }) => {
 
     useEffect(() => {
         fetchBlog();
-            isUserLoggedIn().then((r) => setLoggedIn(r));
             isUserAdmin().then((r) => setIsAdmin(r));
     }, [categoryId]);
 

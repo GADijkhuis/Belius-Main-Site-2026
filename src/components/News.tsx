@@ -5,7 +5,7 @@ import {Button, Caption1, Spinner, Title1} from "@fluentui/react-components";
 import { ArrowCircleRightRegular } from '@fluentui/react-icons';
 import NewsItem from "./news/NewsItem";
 import {navigateToPage} from "../handlers/RouteHandler";
-import {isUserLoggedIn} from "../handlers/UserHandler";
+import {isUserAdmin, isUserLoggedIn} from "../handlers/UserHandler";
 import NewsDialog from "./news/NewsDialog";
 
 const News = ({ showAllNewsItems = false }) => {
@@ -13,12 +13,12 @@ const News = ({ showAllNewsItems = false }) => {
     const [newsItems, setNewsItems] = useState(new Array<NewsModel>());
     const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         fetchNews();
 
-        isUserLoggedIn().then((r) => setLoggedIn(r));
+        isUserAdmin().then((r) => setIsAdmin(r));
     }, []);
 
     const fetchNews =  () => {
@@ -50,7 +50,7 @@ const News = ({ showAllNewsItems = false }) => {
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>
                 { newsItems && newsItems.length > 0 &&
                     newsItems.map((newsItem: NewsModel) => (
-                        <NewsItem key={newsItem.id} newsItem={newsItem} loggedIn={loggedIn} onClose={() => fetchNews()} />
+                        <NewsItem key={newsItem.id} newsItem={newsItem} loggedIn={isAdmin} onClose={() => fetchNews()} />
                     ))
                 }
             </div>
@@ -62,7 +62,7 @@ const News = ({ showAllNewsItems = false }) => {
                     </Button>
                 }
             </div>
-            { loggedIn &&
+            { isAdmin &&
                 <div className={`pos-sticky pos-bottom flex flex-justify-center width-100 mt-medium`}>
                     <div className={`flex flex-gap-medium flex-wrap actions-container`}>
                         <NewsDialog key={`${new Date()}`} newsItem={undefined} onClose={() => fetchNews()}/>

@@ -70,7 +70,7 @@ const Footer = () => {
                         {
                             loggedIn &&
                             <li>
-                                <Link appearance={`subtle`} href={`#blog`}>Blog</Link>
+                                <Link appearance={`subtle`} href={`#blog`}>Wedstrijden volgen</Link>
                             </li>
                         }
                         {
