@@ -47,7 +47,7 @@ class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryMo
                             }
                             { isAdmin &&
                                 <>
-                                    <BlogCategoryDialog onClose={onClose} blogCategoryItem={item} />
+                                    <BlogCategoryDialog onClose={onClose} blogCategoryItem={item} isAdmin={isAdmin} />
                                     <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog categorie Verwijderen?`} description={`Weet u zeker dat dit blog category moet worden verwijderd?`} onConfirm={deleteItem}/>
                                 </>
                             }

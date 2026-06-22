@@ -50,7 +50,6 @@ export const fetchAccountByEmailFromDatabase = async (email: string) => {
         .select(`*`)
         .eq(`email`, email)
         .single();
-    console.log(result);
 
 
     if (result.error) {

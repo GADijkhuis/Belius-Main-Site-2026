@@ -83,6 +83,27 @@ export const uploadImageToDatabase = async (file: File): Promise<string | null> 
     return publicUrlData.publicUrl;
 };
 
+export const uploadBlogImageToDatabase = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+        .from('blog-images')
+        .upload(fileName, file);
+
+    if (error) {
+        console.error(error);
+        return null;
+    }
+    //
+    // const { data: publicUrlData } = supabase.storage
+    //     .from('blog-images')
+    //     .getPublicUrl(fileName);
+
+    return fileName;
+};
+
+
 
 export const fetchBlogCategoriesFromDatabase = async () => {
     const result = await supabase.from(`blog-categories`)
@@ -94,10 +115,24 @@ export const fetchBlogCategoriesFromDatabase = async () => {
         return null;
     }
 
-    const parsedIntoModel: BlogCategoryModel[] = result.data.map((data: any) => ({
-        ...data
-    }));
+    let parsedIntoModel: BlogCategoryModel[] = [];
 
+    for (const row of result.data) {
+        let imageUrl = row.image_url || "";
+
+        if (imageUrl) {
+            const { data: signedUrl } = await supabase.storage
+                .from('blog-images')
+                .createSignedUrl(imageUrl, 60 * 60); // URL valid for 1 hour
+
+            imageUrl = signedUrl?.signedUrl || imageUrl;
+        }
+
+        parsedIntoModel.push({
+            ...row,
+            image_url: imageUrl
+        })
+    }
     return parsedIntoModel;
 }
 
@@ -145,9 +180,24 @@ export const fetchBlogItemsFromDatabase = async (categoryId: number) => {
         return null;
     }
 
-    const parsedIntoModel: BlogModel[] = result.data.map((data: any) => ({
-        ...data
-    }));
+    let parsedIntoModel: BlogModel[] = [];
+
+    for (const row of result.data) {
+        let imageUrl = row.image_url || "";
+
+        if (imageUrl) {
+            const { data: signedUrl } = await supabase.storage
+                .from('blog-images')
+                .createSignedUrl(imageUrl, 60 * 60); // URL valid for 1 hour
+
+            imageUrl = signedUrl?.signedUrl || imageUrl;
+        }
+
+        parsedIntoModel.push({
+            ...row,
+            image_url: imageUrl
+        })
+    }
 
     return parsedIntoModel;
 }

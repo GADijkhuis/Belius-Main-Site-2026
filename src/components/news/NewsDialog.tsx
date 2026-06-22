@@ -9,7 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
     Input,
-    Label, Spinner
+    Label, Spinner, Textarea
 } from "@fluentui/react-components";
 import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
 import {addNewsItem, updateNewsItem} from "../../handlers/NewsHandler";
@@ -36,6 +36,7 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
 
     const [newsItem, setNewsItem] = useState<NewsModel>(initialItem);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -52,10 +53,14 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+        setIsUploading(true);
+
         const file = e.target.files?.[0];
         if (!file) return;
 
         const url = await uploadImageToDatabase(file);
+
+        setIsUploading(false);
 
         if (url) {
             setNewsItem(prev => ({
@@ -114,7 +119,7 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
 
                             <div className={`flex flex-column`}>
                                 <Label htmlFor={fieldIds.description}>Beschrijving</Label>
-                                <Input
+                                <Textarea
                                     id={fieldIds.description}
                                     value={newsItem.description ?? ""}
                                     onChange={(e) =>
@@ -156,15 +161,26 @@ const NewsDialog: React.FC<Props> = ({ newsItem: propItem, onClose }) => {
                                 />
                             </div>
                             <div className={`file-input-wrapper`} >
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                />
-                                <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                    <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                <p>Upload een afbeelding</p>
+                                {
+                                    isUploading ?
+                                        <>
+                                            <Spinner size={`small`} />
+                                            <p>Afbeelding wordt geüpload...</p>
+                                        </>
+                                        :
+                                        <>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                            />
+                                            <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            <p>{newsItem.image_url ? `Huidige afbeelding vervangen` : `Upload een afbeelding`}</p>
+                                        </>
+
+                                }
                             </div>
                         </form>
                     </DialogContent>

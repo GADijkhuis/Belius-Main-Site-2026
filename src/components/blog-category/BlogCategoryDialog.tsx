@@ -10,7 +10,7 @@ import {
     Input,
     Label, Spinner
 } from "@fluentui/react-components";
-import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
+import {uploadBlogImageToDatabase, uploadImageToDatabase} from "../../handlers/DatabaseHandler";
 import {Add16Filled} from "@fluentui/react-icons";
 import {addBlogCategoryItem, updateBlogCategoryItem} from "../../handlers/BlogHandler";
 import {BlogCategoryModel} from "../../models/BlogCategoryModel";
@@ -32,6 +32,7 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
 
     const [blogCategoryItem, setBlogCategoryItem] = useState<BlogCategoryModel>(initialItem);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -45,10 +46,14 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+        setIsUploading(true);
+
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const url = await uploadImageToDatabase(file);
+        const url = await uploadBlogImageToDatabase(file);
+
+        setIsUploading(false);
 
         if (url) {
             setBlogCategoryItem(prev => ({
@@ -105,26 +110,28 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
                                 />
                             </div>
 
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.image_url}>Afbeelding</Label>
-                                <Input
-                                    id={fieldIds.image_url}
-                                    value={blogCategoryItem.image_url ?? ""}
-                                    onChange={(e) =>
-                                        setBlogCategoryItem({ ...blogCategoryItem, image_url: e.target.value })
-                                    }
-                                />
-                            </div>
                             <div className={`file-input-wrapper`} >
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                />
-                                <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                    <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                <p>Upload een afbeelding</p>
+                                {
+                                    isUploading ?
+                                        <>
+                                            <Spinner size={`small`} />
+                                            <p>Afbeelding wordt geüpload...</p>
+                                        </>
+                                        :
+                                        <>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                            />
+                                            <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            <p>{blogCategoryItem.image_url ? `Huidige afbeelding vervangen` : `Upload een afbeelding`}</p>
+                                        </>
+
+                                }
+
                             </div>
                         </form>
                     </DialogContent>

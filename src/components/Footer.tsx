@@ -54,14 +54,6 @@ const Footer = () => {
                         <li>
                             <Link appearance={`subtle`} href={`mailto:zeilen@belius.nl?subject=Wedstrijden Volgen`}>zeilen@belius.nl</Link>
                         </li>
-                        {
-                            loggedIn &&
-                            <li>
-                                <Button as={`a`} className={`button`} appearance={`primary`} onClick={copyLink}>
-                                    { copySuccess ? "Link gekopieerd!" : "Link kopieren"}
-                                </Button>
-                            </li>
-                        }
                     </ul>
                 </div>
                 <div className={`flex-1`}>

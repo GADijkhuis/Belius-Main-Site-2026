@@ -8,9 +8,9 @@ import {
     DialogTitle,
     DialogTrigger,
     Input,
-    Label, Spinner
+    Label, Spinner, Textarea
 } from "@fluentui/react-components";
-import { uploadImageToDatabase } from "../../handlers/DatabaseHandler";
+import {uploadBlogImageToDatabase, uploadImageToDatabase} from "../../handlers/DatabaseHandler";
 import {Add16Filled} from "@fluentui/react-icons";
 import {BlogModel} from "../../models/BlogModel";
 import {addBlogItem, updateBlogItem} from "../../handlers/BlogHandler";
@@ -39,6 +39,7 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
 
     const [blogItem, setBlogItem] = useState<BlogModel>(initialItem);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -55,10 +56,14 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+        setIsUploading(true);
+
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const url = await uploadImageToDatabase(file);
+        const url = await uploadBlogImageToDatabase(file);
+
+        setIsUploading(false);
 
         if (url) {
             setBlogItem(prev => ({
@@ -90,8 +95,7 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
             <DialogTrigger disableButtonEnhancement>
                 <Button as={`a`}
                         className={`button`}
-                        onClick={ () => isAdmin && setIsOpen(true) }
-                        disabled={!isAdmin}>
+                        onClick={ () => isAdmin && setIsOpen(true) }>
                     { isEdit ? <>Bewerken</> : <>Blog item toevoegen <Add16Filled/></> }
                 </Button>
             </DialogTrigger>
@@ -118,7 +122,7 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
 
                             <div className={`flex flex-column`}>
                                 <Label htmlFor={fieldIds.description}>Beschrijving</Label>
-                                <Input
+                                <Textarea
                                     id={fieldIds.description}
                                     value={blogItem.description ?? ""}
                                     onChange={(e) =>
@@ -127,16 +131,16 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
                                 />
                             </div>
 
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.category}>Categorie</Label>
-                                <Input
-                                    id={fieldIds.category}
-                                    value={blogItem.category ?? ""}
-                                    onChange={(e) =>
-                                        setBlogItem({ ...blogItem, category: e.target.value })
-                                    }
-                                />
-                            </div>
+                            {/*<div className={`flex flex-column`}>*/}
+                            {/*    <Label htmlFor={fieldIds.category}>Categorie</Label>*/}
+                            {/*    <Input*/}
+                            {/*        id={fieldIds.category}*/}
+                            {/*        value={blogItem.category ?? ""}*/}
+                            {/*        onChange={(e) =>*/}
+                            {/*            setBlogItem({ ...blogItem, category: e.target.value })*/}
+                            {/*        }*/}
+                            {/*    />*/}
+                            {/*</div>*/}
 
                             <div className={`flex flex-column`}>
                                 <Label htmlFor={fieldIds.link}>Link</Label>
@@ -149,26 +153,28 @@ const BlogDialog: React.FC<Props> = ({ blogItem: propItem, onClose, categoryId, 
                                 />
                             </div>
 
-                            <div className={`flex flex-column`}>
-                                <Label htmlFor={fieldIds.image_url}>Afbeelding</Label>
-                                <Input
-                                    id={fieldIds.image_url}
-                                    value={blogItem.image_url ?? ""}
-                                    onChange={(e) =>
-                                        setBlogItem({ ...blogItem, image_url: e.target.value })
-                                    }
-                                />
-                            </div>
                             <div className={`file-input-wrapper`} >
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                />
-                                <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                    <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                <p>Upload een afbeelding</p>
+                                {
+                                    isUploading ?
+                                        <>
+                                            <Spinner size={`small`} />
+                                            <p>Afbeelding wordt geüpload...</p>
+                                        </>
+                                        :
+                                        <>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                            />
+                                            <svg className="file-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12M8 8l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            <p>{blogItem.image_url ? `Huidige afbeelding vervangen` : `Upload een afbeelding`}</p>
+                                        </>
+
+                                }
+
                             </div>
                         </form>
                     </DialogContent>
