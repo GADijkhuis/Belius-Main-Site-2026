@@ -22,7 +22,7 @@ const News = ({ showAllNewsItems = false }) => {
     }, []);
 
     const fetchNews =  () => {
-        fetchNewsItems(showAllNewsItems ? null : 7).then(({ data, error }) => {
+        fetchNewsItems(showAllNewsItems ? null : 5).then(({ data, error }) => {
             setIsLoading(false);
 
             if (error) {
@@ -33,8 +33,8 @@ const News = ({ showAllNewsItems = false }) => {
             if (data) {
                 let newsItemsData = data;
 
-                if (!showAllNewsItems && newsItemsData.length > 6) {
-                    newsItemsData = newsItemsData.slice(0, 6);
+                if (!showAllNewsItems && newsItemsData.length > 4) {
+                    newsItemsData = newsItemsData.slice(0, 4);
                     setShowMoreButton(true);
                 }
 

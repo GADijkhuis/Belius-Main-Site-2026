@@ -6,10 +6,12 @@ import {BlogCategoryModel} from "../models/BlogCategoryModel";
 import BlogCategoryItem from "./blog-category/BlogCategoryItem";
 import BlogCategoryDialog from "./blog-category/BlogCategoryDialog";
 import {navigateToPage} from "../handlers/RouteHandler";
+import {ArrowCircleRightRegular} from "@fluentui/react-icons";
 
-const BlogCategory = () => {
+const BlogCategory = ({ showAllBlogCategoryItems = false }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [blogCategoryItems, setBlogCategoryItems] = useState(new Array<BlogCategoryModel>());
+    const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -27,15 +29,23 @@ const BlogCategory = () => {
     }, []);
 
     const fetchBlogCategories = () => {
-        fetchBlogCategoryItems().then(({ data, error }) => {
+        fetchBlogCategoryItems(showAllBlogCategoryItems ? null : 5).then(({ data, error }) => {
             setIsLoading(false);
 
             if (error) {
                 setError(error);
+                return;
             }
 
             if (data) {
-                setBlogCategoryItems(data);
+                let blogCategoryData = data;
+
+                if (!showAllBlogCategoryItems && blogCategoryData.length > 4) {
+                    blogCategoryData = blogCategoryData.slice(0, 4);
+                    setShowMoreButton(true);
+                }
+
+                setBlogCategoryItems(blogCategoryData);
             }
         });
     }
@@ -58,6 +68,14 @@ const BlogCategory = () => {
                     blogCategoryItems.map((blogCategory: BlogCategoryModel) => (
                         <BlogCategoryItem blogCategoryItem={blogCategory} isAdmin={isAdmin} onClose={() => fetchBlogCategories()}/>
                     ))
+                }
+            </div>
+            <div className={`flex flex-align-center flex-gap-medium flex-justify-center`}>
+                {
+                    showMoreButton &&
+                    <Button as={`a`} className={`button`} appearance={`subtle`} onClick={() => navigateToPage(`blog`)}>
+                        Ga naar alle wedstrijden <ArrowCircleRightRegular />
+                    </Button>
                 }
             </div>
             { isAdmin &&

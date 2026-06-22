@@ -30,7 +30,7 @@ const BlogCategoryPage = () => {
                     : isLoading ?
                         <Spinner />
                         :
-                        <BlogCategory />
+                        <BlogCategory showAllBlogCategoryItems={true} />
                 }
                 <Line/>
                 <Footer />

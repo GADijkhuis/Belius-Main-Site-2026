@@ -81,13 +81,13 @@ const LoginPage = () => {
                   }
                   { loginState === LoginStates.OTP &&
                       <form className={`flex flex-column flex-gap-small`} onSubmit={otpClick}>
-                          <Input type={`text`} id={otpId} placeholder="Token" className={`width-100`} onChange={(e) => setOTP(e.target.value)}/>
+                          <Input type={`text`} id={otpId} placeholder="Code" className={`width-100`} onChange={(e) => setOTP(e.target.value)}/>
                           <div className={`flex flex-space-between width-100`}>
                               <Button as={`a`} className={`button`} appearance={`subtle`} onClick={backToEmail}>
                                   Email wijzigen
                               </Button>
                               <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`}>
-                                  Token valideren
+                                  Code valideren
                               </Button>
                           </div>
                           <p className={`text-small text-no-margin text-center text-sub`}>Let op, de email wordt verzonden via no-reply@gadijkhuis.nl</p>

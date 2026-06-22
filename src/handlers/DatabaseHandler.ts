@@ -105,7 +105,7 @@ export const uploadBlogImageToDatabase = async (file: File): Promise<string | nu
 
 
 
-export const fetchBlogCategoriesFromDatabase = async () => {
+export const fetchBlogCategoriesFromDatabase = async (amount: number | null = null) => {
     const result = await supabase.from(`blog-categories`)
         .select(`*`)
         .order(`id`, { ascending: false });
@@ -133,7 +133,25 @@ export const fetchBlogCategoriesFromDatabase = async () => {
             image_url: imageUrl
         })
     }
+    if (amount) {
+        return parsedIntoModel.slice(0, amount);
+    }
+
     return parsedIntoModel;
+}
+
+export const fetchBlogCategoryTitleByIdFromDatabase = async (id: number) => {
+    const result = await supabase.from(`blog-categories`)
+        .select(`name`)
+        .eq(`id`, id)
+        .single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data.name as string;
 }
 
 export const addBlogCategoryToDatabase = async (blogItem: Partial<BlogCategoryModel>) => {

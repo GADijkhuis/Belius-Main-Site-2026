@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {isUserAdmin, isUserLoggedIn} from "../handlers/UserHandler";
-import {fetchBlogItems} from "../handlers/BlogHandler";
+import {fetchBlogCategoryTitleById, fetchBlogItems} from "../handlers/BlogHandler";
 import {Spinner, Title1, Caption1} from "@fluentui/react-components";
 import {BlogModel} from "../models/BlogModel";
 import BlogItem from "./blog/BlogItem";
@@ -10,6 +10,7 @@ import BackButton from "./assets/BackButton";
 const Blog = ({categoryId}: { categoryId: number }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [blogItems, setBlogItems] = useState(new Array<BlogModel>());
+    const [title, setTitle] = useState(`Wedstrijden volgen`);
     const [error, setError] = useState(``);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -30,12 +31,21 @@ const Blog = ({categoryId}: { categoryId: number }) => {
     useEffect(() => {
         fetchBlog();
             isUserAdmin().then((r) => setIsAdmin(r));
+        fetchBlogCategoryTitleById(categoryId).then(({ data, error }) => {
+            if (error) {
+                setError(error);
+            }
+
+            if (data) {
+                setTitle(`Wedstrijd: ${data}`);
+            }
+        });
     }, [categoryId]);
 
     return (
         <>
             <BackButton/>
-            <Title1>Wedstrijden volgen</Title1>
+            <Title1>{title}</Title1>
             { isLoading && <Spinner /> }
             {error && <Caption1>{error}</Caption1>}
             <div className={`flex flex-wrap flex-align-center flex-gap-medium flex-justify-center flex-align-stretch`}>

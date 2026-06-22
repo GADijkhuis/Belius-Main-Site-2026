@@ -86,7 +86,7 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
                 <Button as={`a`}
                         className={`button`}
                         onClick={ () => isAdmin && setIsOpen(true) } >
-                    { isEdit ? <>Bewerken</> : <>Blog item toevoegen <Add16Filled/></> }
+                    { isEdit ? <>Bewerken</> : <>Wedstrijd blog toevoegen <Add16Filled/></> }
                 </Button>
             </DialogTrigger>
 
@@ -94,7 +94,7 @@ const BlogCategoryDialog: React.FC<Props> = ({ blogCategoryItem: propItem, onClo
                 <DialogBody>
                     { error && <Caption1>{ error }</Caption1> }
                     <DialogTitle>
-                        Blog item {isEdit ? "bewerken" : "toevoegen"}
+                        Wedstrijd blog {isEdit ? "bewerken" : "toevoegen"}
                     </DialogTitle>
 
                     <DialogContent>

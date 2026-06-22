@@ -19,7 +19,10 @@ const MainPage = () => {
             <Header />
             <div className={`body-container`}>
                 { loggedIn &&
-                    <BlogCategory/>
+                    <>
+                        <BlogCategory />
+                        <Line/>
+                    </>
                 }
                 <News />
                 <Line/>

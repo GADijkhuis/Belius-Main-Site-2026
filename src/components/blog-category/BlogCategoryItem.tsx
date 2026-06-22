@@ -42,7 +42,7 @@ class BlogCategoryItem extends React.Component<{blogCategoryItem: BlogCategoryMo
                         <div className={`flex flex-gap-small flex-wrap`}>
                             { item.id &&
                                 <Button as={`a`} className={`button`} target={`_blank`} onClick={() => navigateToPage(`blog/${item.id}`)}>
-                                    Open Categorie
+                                    Wedstrijd blog openen
                                 </Button>
                             }
                             { isAdmin &&

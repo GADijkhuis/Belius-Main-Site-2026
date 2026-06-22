@@ -2,7 +2,7 @@ import {
     addBlogCategoryToDatabase,
     addBlogItemToDatabase,
     addNewsItemToDatabase, deleteBlogCategoryFromDatabase, deleteBlogItemFromDatabase,
-    deleteNewsItemFromDatabase, fetchBlogCategoriesFromDatabase, fetchBlogItemsFromDatabase,
+    deleteNewsItemFromDatabase, fetchBlogCategoriesFromDatabase, fetchBlogCategoryTitleByIdFromDatabase, fetchBlogItemsFromDatabase,
     fetchNewsItemsFromDatabase, updateBlogCategoryInDatabase, updateBlogItemInDatabase,
     updateNewsItemInDatabase
 } from "./DatabaseHandler";
@@ -10,13 +10,21 @@ import {NewsModel} from "../models/NewsModel";
 import {BlogModel} from "../models/BlogModel";
 import {BlogCategoryModel} from "../models/BlogCategoryModel";
 
-export const fetchBlogCategoryItems = async () => {
+export const fetchBlogCategoryItems = async (amount: number | null = null) => {
 
-    const response = await fetchBlogCategoriesFromDatabase();
+    const response = await fetchBlogCategoriesFromDatabase(amount);
 
     if (!response) return { data: null, error: `Er konden geen items worden geladen.` };
 
     if (response.length === 0) return { data: null, error: `Geen items gevonden.` };
+
+    return { data: response, error: null };
+}
+
+export const fetchBlogCategoryTitleById = async (id: number) => {
+    const response = await fetchBlogCategoryTitleByIdFromDatabase(id);
+
+    if (!response) return { data: null, error: `Er kon geen categorie worden geladen.` };
 
     return { data: response, error: null };
 }

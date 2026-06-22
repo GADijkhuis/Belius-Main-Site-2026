@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import {isUserLoggedIn} from "../handlers/UserHandler";
 import {Button, Spinner} from "@fluentui/react-components";
 import {navigateToPage} from "../handlers/RouteHandler";
+import {fetchBlogCategoryTitleById} from "../handlers/BlogHandler";
 
 const BlogPage = () => {
     const { categoryId } = useParams();
