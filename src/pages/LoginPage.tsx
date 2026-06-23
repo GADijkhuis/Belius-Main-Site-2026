@@ -65,7 +65,7 @@ const LoginPage = () => {
                                   <Subtitle1>Welkom bij Belius</Subtitle1>
                                   { isLoading && <Spinner size={`extra-small`}/> }
                               </div>
-                              <p className={`text-no-margin`}>{ loginState === LoginStates.EMAIL ? `Voer een email adres in` : `Een email is verzonden naar ${email}.` }</p>
+                              <p className={`text-no-margin`}>{ loginState === LoginStates.EMAIL ? `Voer een email adres in` : `Een email met een code is verzonden naar ${email}.` }</p>
                           </div>
                       </div>
                   </div>
