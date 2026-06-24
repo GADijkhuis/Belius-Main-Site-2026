@@ -1,6 +1,8 @@
 import {createClient} from '@supabase/supabase-js';
 import {NewsModel} from "../models/NewsModel";
 import {BlogModel} from "../models/BlogModel";
+import BlogCategory from "../components/BlogCategory";
+import {BlogCategoryModel} from "../models/BlogCategoryModel";
 
 export const supabase = createClient(
     process.env.REACT_APP_SUPABASE_URL || "",
@@ -81,10 +83,114 @@ export const uploadImageToDatabase = async (file: File): Promise<string | null> 
     return publicUrlData.publicUrl;
 };
 
+export const uploadBlogImageToDatabase = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
 
-export const fetchBlogItemsFromDatabase = async () => {
+    const { data, error } = await supabase.storage
+        .from('blog-images')
+        .upload(fileName, file);
+
+    if (error) {
+        console.error(error);
+        return null;
+    }
+    //
+    // const { data: publicUrlData } = supabase.storage
+    //     .from('blog-images')
+    //     .getPublicUrl(fileName);
+
+    return fileName;
+};
+
+
+
+export const fetchBlogCategoriesFromDatabase = async (amount: number | null = null) => {
+    const result = await supabase.from(`blog-categories`)
+        .select(`*`)
+        .order(`id`, { ascending: false });
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    let parsedIntoModel: BlogCategoryModel[] = [];
+
+    for (const row of result.data) {
+        let imageUrl = row.image_url || "";
+
+        if (imageUrl) {
+            const { data: signedUrl } = await supabase.storage
+                .from('blog-images')
+                .createSignedUrl(imageUrl, 60 * 60); // URL valid for 1 hour
+
+            imageUrl = signedUrl?.signedUrl || imageUrl;
+        }
+
+        parsedIntoModel.push({
+            ...row,
+            image_url: imageUrl
+        })
+    }
+    if (amount) {
+        return parsedIntoModel.slice(0, amount);
+    }
+
+    return parsedIntoModel;
+}
+
+export const fetchBlogCategoryTitleByIdFromDatabase = async (id: number) => {
+    const result = await supabase.from(`blog-categories`)
+        .select(`name`)
+        .eq(`id`, id)
+        .single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data.name as string;
+}
+
+export const addBlogCategoryToDatabase = async (blogItem: Partial<BlogCategoryModel>) => {
+    const result = await supabase.from(`blog-categories`).insert(blogItem).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogCategoryModel;
+}
+
+export const updateBlogCategoryInDatabase = async (id: number, blogItem: Partial<BlogCategoryModel>) => {
+    const result = await supabase.from(`blog-categories`).update(blogItem).eq('id', id).select().single();
+
+    if (result.error || !result.data) {
+        console.error(result.error);
+        return null;
+    }
+
+    return result.data as BlogModel;
+}
+
+export const deleteBlogCategoryFromDatabase = async (id: number) => {
+    const result = await supabase.from(`blog-categories`).delete().eq('id', id);
+
+    if (result.error) {
+        console.error(result.error);
+        return null;
+    }
+
+    return true;
+}
+
+export const fetchBlogItemsFromDatabase = async (categoryId: number) => {
     const result = await supabase.from(`blog`)
         .select(`*`)
+        .eq(`category_id`, categoryId)
         .order(`date`, { ascending: false });
 
     if (result.error || !result.data) {
@@ -92,9 +198,24 @@ export const fetchBlogItemsFromDatabase = async () => {
         return null;
     }
 
-    const parsedIntoModel: BlogModel[] = result.data.map((data: any) => ({
-        ...data
-    }));
+    let parsedIntoModel: BlogModel[] = [];
+
+    for (const row of result.data) {
+        let imageUrl = row.image_url || "";
+
+        if (imageUrl) {
+            const { data: signedUrl } = await supabase.storage
+                .from('blog-images')
+                .createSignedUrl(imageUrl, 60 * 60); // URL valid for 1 hour
+
+            imageUrl = signedUrl?.signedUrl || imageUrl;
+        }
+
+        parsedIntoModel.push({
+            ...row,
+            image_url: imageUrl
+        })
+    }
 
     return parsedIntoModel;
 }

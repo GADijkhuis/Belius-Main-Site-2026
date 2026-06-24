@@ -22,7 +22,7 @@ const ConfirmDialog: React.FC<Props> = ({buttonContent, title, description, onCo
                         {buttonContent}
                     </Button>
                 </DialogTrigger>
-                <DialogSurface>
+                <DialogSurface className={`dialog`}>
                     <DialogBody>
                         <DialogTitle>
                             {title}

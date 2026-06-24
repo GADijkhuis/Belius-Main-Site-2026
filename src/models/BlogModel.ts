@@ -7,4 +7,5 @@ export interface BlogModel {
     description: string | null;
     category: string | null;
     link: string | null;
+    category_id: number;
 }

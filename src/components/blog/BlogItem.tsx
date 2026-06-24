@@ -1,16 +1,17 @@
 import {Text, Caption1, Caption2, Card, CardHeader, CardPreview, Button, CardFooter} from "@fluentui/react-components";
 import {Delete16Filled} from "@fluentui/react-icons"
 import React from "react";
-import NewsDialog from "./BlogDialog";
+import BlogDialog from "./BlogDialog";
 import ConfirmDialog from "../assets/ConfirmDialog";
 import {BlogModel} from "../../models/BlogModel";
 import {deleteBlogItem} from "../../handlers/BlogHandler";
 
-class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, onClose: () => void}> {
+class BlogItem extends React.Component<{blogItem: BlogModel, isAdmin: boolean, onClose: () => void, categoryId: number}> {
     render() {
         const item = this.props.blogItem;
-        const loggedIn = this.props.loggedIn;
+        const isAdmin = this.props.isAdmin;
         const onClose = this.props.onClose;
+        const categoryId = this.props.categoryId;
 
         const deleteItem = () => {
             deleteBlogItem(item).then(() => {
@@ -50,9 +51,9 @@ class BlogItem extends React.Component<{blogItem: BlogModel, loggedIn: boolean, 
                                     Open Link
                                 </Button>
                             }
-                            { loggedIn &&
+                            { isAdmin &&
                                 <>
-                                    <NewsDialog onClose={onClose} blogItem={item} />
+                                    <BlogDialog onClose={onClose} blogItem={item} categoryId={categoryId} isAdmin={isAdmin} />
                                     <ConfirmDialog buttonContent={<><Delete16Filled/> Verwijderen</>} title={`Blog item Verwijderen?`} description={`Weet u zeker dat dit blog item moet worden verwijderd?`} onConfirm={deleteItem}/>
                                 </>
                             }
