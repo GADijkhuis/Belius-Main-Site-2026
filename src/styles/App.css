@@ -40,6 +40,12 @@
     padding-right: 16px;
 }
 
+.page-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+}
+
 /*
 -ACTIONS
  */

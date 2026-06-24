@@ -45,7 +45,7 @@ const LoginPage = () => {
         setIsLoading(false);
 
         if (!result) {
-            navigateToPage(``);
+            window.location.href = "/";
             return;
         }
 
@@ -65,7 +65,7 @@ const LoginPage = () => {
                                   <Subtitle1>Welkom bij Belius</Subtitle1>
                                   { isLoading && <Spinner size={`extra-small`}/> }
                               </div>
-                              <p className={`text-no-margin`}>{ loginState === LoginStates.EMAIL ? `Voer een email adres in` : `Een email is verzonden naar ${email}.` }</p>
+                              <p className={`text-no-margin`}>{ loginState === LoginStates.EMAIL ? `Voer een email adres in` : `Een email met een code is verzonden naar ${email}.` }</p>
                           </div>
                       </div>
                   </div>
@@ -81,16 +81,16 @@ const LoginPage = () => {
                   }
                   { loginState === LoginStates.OTP &&
                       <form className={`flex flex-column flex-gap-small`} onSubmit={otpClick}>
-                          <Input type={`text`} id={otpId} placeholder="Token" className={`width-100`} onChange={(e) => setOTP(e.target.value)}/>
+                          <Input type={`text`} id={otpId} placeholder="Code" className={`width-100`} onChange={(e) => setOTP(e.target.value)}/>
                           <div className={`flex flex-space-between width-100`}>
                               <Button as={`a`} className={`button`} appearance={`subtle`} onClick={backToEmail}>
                                   Email wijzigen
                               </Button>
                               <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`}>
-                                  Token valideren
+                                  Code valideren
                               </Button>
                           </div>
-                          <p className={`text-small text-no-margin text-center text-sub`}>Let op, de email wordt verzonden via noreply@mail.app.supabase.io</p>
+                          <p className={`text-small text-no-margin text-center text-sub`}>Let op, de email wordt verzonden via no-reply@gadijkhuis.nl</p>
                       </form>
                   }
 
