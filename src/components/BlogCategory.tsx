@@ -13,6 +13,7 @@ const BlogCategory = ({ showAllBlogCategoryItems = false }) => {
     const [blogCategoryItems, setBlogCategoryItems] = useState(new Array<BlogCategoryModel>());
     const [showMoreButton, setShowMoreButton] = useState(false);
     const [error, setError] = useState(``);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
@@ -21,9 +22,11 @@ const BlogCategory = ({ showAllBlogCategoryItems = false }) => {
                 setIsLoading(false);
                 return;
             }
+            setIsLoggedIn(true);
 
             fetchBlogCategories();
         });
+
 
         isUserAdmin().then((r: boolean) => setIsAdmin(r));
     }, []);
@@ -53,7 +56,7 @@ const BlogCategory = ({ showAllBlogCategoryItems = false }) => {
     return (
         <>
             <Title1>Wedstrijden volgen</Title1>
-            { !isLoading && !isAdmin && blogCategoryItems.length === 0 &&
+            { !isLoading && !isLoggedIn && blogCategoryItems.length === 0 &&
                 <div className={`flex flex-column flex-gap-small`}>
                     <p>Je moet ingelogd zijn om deze blog te bekijken.</p>
                     <Button as={`a`} className={`button`} appearance={`primary`} onClick={() => navigateToPage(`login`)}>
