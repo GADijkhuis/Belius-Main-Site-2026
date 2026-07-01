@@ -1,6 +1,6 @@
 import {Button, Card, Input, Spinner, Subtitle1, useId} from "@fluentui/react-components";
 import {LoginStates} from "../enums/LoginStates";
-import {useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {checkLoginPage, navigateToPage} from "../handlers/RouteHandler";
 import MessageBox from "../components/assets/MessageBar";
 import logo from '../assets/belius-logo.webp';
@@ -16,9 +16,14 @@ const LoginPage = () => {
     const emailId = useId("Email");
     const otpId = useId("Otp");
 
-    checkLoginPage();
+    useEffect(() => {
+        checkLoginPage();
+    }, []);
 
-    async function emailClick() {
+    async function emailClick(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        if (isLoading) return;
+
         setErrorMsg(undefined);
         setIsLoading(true);
         const result = await signInUserPasswordless(email);
@@ -37,15 +42,19 @@ const LoginPage = () => {
         setLoginState(LoginStates.EMAIL);
     }
 
-    async function otpClick() {
+    async function otpClick(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        if (isLoading) return;
+
         setErrorMsg(undefined);
+        const normalizedOtp = otp.replace(/\s+/g, "").trim();
 
         setIsLoading(true);
-        const result = await verifyOTP(email, otp);
+        const result = await verifyOTP(email, normalizedOtp);
         setIsLoading(false);
 
         if (!result) {
-            window.location.href = "/";
+            navigateToPage("");
             return;
         }
 
@@ -71,9 +80,17 @@ const LoginPage = () => {
                   </div>
                   { loginState === LoginStates.EMAIL &&
                       <form className={`flex flex-column flex-gap-small`} onSubmit={emailClick}>
-                          <Input type={`email`} id={emailId} placeholder="Email" className={`width-100`} onChange={(e) => setEmail(e.target.value)} />
+                          <Input
+                              type={`email`}
+                              id={emailId}
+                              autoComplete={`email`}
+                              placeholder="Email"
+                              className={`width-100`}
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                          />
                           <div className={`flex flex-justify-end width-100`}>
-                              <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`}>
+                              <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`} disabled={isLoading}>
                                   Inloggen
                               </Button>
                           </div>
@@ -81,12 +98,22 @@ const LoginPage = () => {
                   }
                   { loginState === LoginStates.OTP &&
                       <form className={`flex flex-column flex-gap-small`} onSubmit={otpClick}>
-                          <Input type={`text`} id={otpId} placeholder="Code" className={`width-100`} onChange={(e) => setOTP(e.target.value)}/>
+                          <Input
+                              type={`text`}
+                              id={otpId}
+                              autoComplete={`one-time-code`}
+                              inputMode={`numeric`}
+                              placeholder="Code"
+                              className={`width-100`}
+                              value={otp}
+                              onChange={(e) => setOTP(e.target.value)}
+                              onInput={(e) => setOTP((e.target as HTMLInputElement).value)}
+                          />
                           <div className={`flex flex-space-between width-100`}>
                               <Button as={`a`} className={`button`} appearance={`subtle`} onClick={backToEmail}>
                                   Email wijzigen
                               </Button>
-                              <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`}>
+                              <Button as={"button"} className={`button`} type={`submit`} appearance={`primary`} disabled={isLoading || !otp.trim()}>
                                   Code valideren
                               </Button>
                           </div>
