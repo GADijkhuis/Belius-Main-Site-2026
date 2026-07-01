@@ -1,9 +1,9 @@
 export const navigateToPage = (path: string) => {
-    window.location.href = `#/${path}`;
+    window.location.hash = `#/${path}`;
 }
 
 export const checkLoginPage = () => {
-    if (window.location.href.startsWith("?")) return;
+    if (window.location.hash === `#/login`) return;
 
-    window.location.href = `?#/login`;
+    navigateToPage(`login`);
 }
